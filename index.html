@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AÇAÍ PIMENTA — Controle de Integrantes</title>
+<style>
+/* ============================================================
+   AÇAÍ PIMENTA — style.css
+   Tema: escuro, roxo + vermelho + branco, estética de guilda FF
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0e0a16;
+  --bg-soft: #150f20;
+  --surface: #1c1428;
+  --surface-2: #261b38;
+  --border: #392a4d;
+
+  --purple: #8b5cf6;
+  --purple-deep: #6d28d9;
+  --red: #ef3b56;
+  --red-deep: #c21e3a;
+
+  --text: #f3eefb;
+  --text-dim: #a898c2;
+  --text-faint: #6f6184;
+
+  --ok: #34d399;
+  --warn: #fbbf24;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+
+  --shadow-glow: 0 0 0 1px rgba(139, 92, 246, 0.15), 0 12px 32px -12px rgba(109, 40, 217, 0.45);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-image:
+    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(139, 92, 246, 0.18), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 100% 0%, rgba(239, 59, 86, 0.14), transparent 55%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+h1, h2, h3, .brand, .stat-value, button, nav button {
+  font-family: 'Rajdhani', 'Inter', sans-serif;
+}
+
+::selection { background: var(--purple-deep); color: #fff; }
+
+a { color: inherit; }
+
+/* ---------- layout shell ---------- */
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 22px;
+  background: rgba(14, 10, 22, 0.86);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: linear-gradient(145deg, var(--purple), var(--red));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  box-shadow: var(--shadow-glow);
+  flex: none;
+}
+
+.brand small {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-dim);
+  letter-spacing: 0.2px;
+}
+
+nav.main-nav {
+  display: flex;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 4px;
+  border-radius: var(--radius-md);
+}
+
+nav.main-nav button {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+
+nav.main-nav button:hover { color: var(--text); }
+
+nav.main-nav button.active {
+  background: linear-gradient(135deg, var(--purple-deep), var(--red-deep));
+  color: #fff;
+}
+
+.leader-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.leader-pill button {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-dim);
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color .15s ease, color .15s ease;
+}
+.leader-pill button:hover { border-color: var(--purple); color: var(--text); }
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 28px 20px 80px;
+}
+
+.view { display: none; }
+.view.active { display: block; animation: fadeIn .25s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .view.active { animation: none; }
+}
+
+/* ---------- hero / home ---------- */
+
+.hero {
+  text-align: center;
+  padding: 54px 20px 36px;
+}
+
+.hero .tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--red);
+  background: rgba(239, 59, 86, 0.12);
+  border: 1px solid rgba(239, 59, 86, 0.3);
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+.hero h1 {
+  font-size: 52px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #fff 30%, var(--purple) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero p {
+  color: var(--text-dim);
+  font-size: 16px;
+  max-width: 440px;
+  margin: 0 auto 28px;
+  line-height: 1.6;
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14.5px;
+  padding: 12px 22px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--purple), var(--red));
+  color: #fff;
+  box-shadow: 0 10px 24px -10px rgba(239, 59, 86, 0.55);
+}
+.btn-primary:hover { filter: brightness(1.08); }
+
+.btn-ghost {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--purple); }
+
+.btn-danger {
+  background: rgba(239, 59, 86, 0.14);
+  color: #ff8095;
+  border: 1px solid rgba(239, 59, 86, 0.35);
+}
+.btn-danger:hover { background: rgba(239, 59, 86, 0.22); }
+
+.btn-sm { padding: 7px 12px; font-size: 13px; border-radius: 8px; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---------- cards / forms ---------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.card h2 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+.card .sub {
+  color: var(--text-dim);
+  font-size: 13.5px;
+  margin: 0 0 22px;
+}
+
+.field { margin-bottom: 16px; text-align: left; }
+.field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  letter-spacing: 0.2px;
+}
+.field input, .field select {
+  width: 100%;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 11px 13px;
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color .15s ease;
+}
+.field input:focus, .field select:focus { border-color: var(--purple); }
+.field .hint { font-size: 11.5px; color: var(--text-faint); margin-top: 5px; }
+
+.form-msg {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  display: none;
+}
+.form-msg.show { display: block; }
+.form-msg.ok { background: rgba(52, 211, 153, 0.12); color: var(--ok); border: 1px solid rgba(52, 211, 153, 0.3); }
+.form-msg.err { background: rgba(239, 59, 86, 0.12); color: #ff8095; border: 1px solid rgba(239, 59, 86, 0.3); }
+
+/* ---------- section headers ---------- */
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.section-head h2 { margin: 0; font-size: 24px; }
+.section-head .count {
+  font-size: 13px;
+  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.search-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.search-row input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  outline: none;
+}
+.search-row input:focus { border-color: var(--purple); }
+
+/* ---------- stat grid ---------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 26px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 14px;
+  text-align: center;
+}
+.stat-value { font-size: 26px; font-weight: 700; }
+.stat-label { font-size: 11px; color: var(--text-dim); margin-top: 2px; letter-spacing: 0.2px; }
+
+.stat-card.c-total .stat-value { color: var(--text); }
+.stat-card.c-ativo .stat-value { color: var(--ok); }
+.stat-card.c-inativo .stat-value { color: var(--warn); }
+.stat-card.c-saiu-grupo .stat-value,
+.stat-card.c-saiu-guilda .stat-value { color: var(--red); }
+
+@media (max-width: 720px) {
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------- member list ---------- */
+
+.member-list { display: flex; flex-direction: column; gap: 8px; }
+
+.member-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 13px 16px;
+}
+
+.member-row .idx {
+  font-size: 12px;
+  color: var(--text-faint);
+  width: 26px;
+  flex: none;
+}
+
+.member-row .nick {
+  font-weight: 600;
+  font-size: 15.5px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badge {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex: none;
+}
+.badge-ativo { background: rgba(52, 211, 153, 0.14); color: var(--ok); }
+.badge-inativo { background: rgba(251, 191, 36, 0.14); color: var(--warn); }
+.badge-saiu-grupo { background: rgba(239, 59, 86, 0.14); color: #ff8095; }
+.badge-saiu-guilda { background: rgba(239, 59, 86, 0.2); color: #ff5570; }
+.badge-pendente { background: rgba(139, 92, 246, 0.16); color: #c4b1fb; }
+
+.member-row .actions {
+  display: flex;
+  gap: 6px;
+  flex: none;
+}
+
+.empty-state, .loading-state {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 50px 20px;
+  font-size: 14.5px;
+}
+.loading-state .spinner {
+  width: 26px;
+  height: 26px;
+  border: 3px solid var(--border);
+  border-top-color: var(--purple);
+  border-radius: 50%;
+  margin: 0 auto 14px;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- modal ---------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 5, 13, 0.72);
+  backdrop-filter: blur(3px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 50;
+}
+.modal-backdrop.show { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 24px 60px -20px rgba(0,0,0,0.6);
+}
+.modal h3 { margin: 0 0 4px; font-size: 19px; }
+.modal .sub { color: var(--text-dim); font-size: 13px; margin: 0 0 18px; }
+.modal .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.phone-reveal {
+  font-family: 'Rajdhani', monospace;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  margin-top: 4px;
+}
+
+/* ---------- footer ---------- */
+
+footer {
+  text-align: center;
+  color: var(--text-faint);
+  font-size: 12px;
+  padding: 30px 20px 10px;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 640px) {
+  .app-header { flex-wrap: wrap; }
+  nav.main-nav { order: 3; width: 100%; justify-content: space-between; }
+  nav.main-nav button { flex: 1; text-align: center; padding: 9px 8px; font-size: 14px; }
+  .hero h1 { font-size: 36px; }
+  .member-row { flex-wrap: wrap; }
+  .member-row .actions { width: 100%; justify-content: flex-start; margin-top: 4px; }
+}
+
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">🍇</div>
+    <div>
+      AÇAÍ PIMENTA
+      <small>Controle oficial de integrantes</small>
+    </div>
+  </div>
+
+  <nav class="main-nav">
+    <button data-view="home" class="active">Início</button>
+    <button data-view="integrantes">Integrantes</button>
+    <button data-view="painel">Painel do líder</button>
+  </nav>
+
+  <div class="leader-pill">
+    <span id="leaderStatus">Visitante</span>
+    <button id="leaderActionBtn">Entrar</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== HOME / CADASTRO ===================== -->
+  <section id="view-home" class="view active">
+    <div class="hero">
+      <span class="tag">Free Fire · Guilda</span>
+      <h1>AÇAÍ PIMENTA</h1>
+      <p>Controle oficial de integrantes da guilda. Cadastre seu nick para que o líder saiba quem está ativo no grupo.</p>
+      <button class="btn btn-primary" id="openCadastroBtn">Cadastrar meu Nick</button>
+    </div>
+
+    <div class="card" id="cadastroCard" style="display:none;">
+      <h2>Cadastrar meu Nick</h2>
+      <p class="sub">Seu telefone fica visível apenas para o líder da guilda.</p>
+
+      <form id="cadastroForm">
+        <div class="field">
+          <label for="nickInput">Nick atual no Free Fire</label>
+          <input id="nickInput" type="text" maxlength="30" placeholder="Ex: PimentaX_99" required>
+        </div>
+        <div class="field">
+          <label for="telInput">Telefone com DDD</label>
+          <input id="telInput" type="tel" placeholder="Ex: (11) 91234-5678" required>
+          <div class="hint">Visível somente para o líder.</div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;" id="salvarCadastroBtn">
+          Salvar cadastro
+        </button>
+        <div class="form-msg" id="cadastroMsg"></div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===================== LISTA DE INTEGRANTES ===================== -->
+  <section id="view-integrantes" class="view">
+    <div class="section-head">
+      <h2>Integrantes</h2>
+      <span class="count" id="integrantesCount">0 integrantes</span>
+    </div>
+
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="Pesquisar por nick...">
+    </div>
+
+    <div id="integrantesListWrap">
+      <div class="loading-state" id="integrantesLoading">
+        <div class="spinner"></div>
+        Carregando integrantes...
+      </div>
+      <div class="member-list" id="integrantesList" style="display:none;"></div>
+      <div class="empty-state" id="integrantesEmpty" style="display:none;">
+        Nenhum integrante cadastrado ainda.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PAINEL DO LÍDER ===================== -->
+  <section id="view-painel" class="view">
+
+    <div id="painelLoginWrap">
+      <div class="card">
+        <h2>Painel do líder</h2>
+        <p class="sub">Área restrita. Entre com a conta de líder da guilda.</p>
+        <form id="loginForm">
+          <div class="field">
+            <label for="loginEmail">E-mail</label>
+            <input id="loginEmail" type="email" required>
+          </div>
+          <div class="field">
+            <label for="loginSenha">Senha</label>
+            <input id="loginSenha" type="password" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Entrar</button>
+          <div class="form-msg" id="loginMsg"></div>
+        </form>
+      </div>
+    </div>
+
+    <div id="painelAdminWrap" style="display:none;">
+
+      <div class="stat-grid">
+        <div class="stat-card c-total"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total</div></div>
+        <div class="stat-card c-ativo"><div class="stat-value" id="statAtivo">0</div><div class="stat-label">Ativos</div></div>
+        <div class="stat-card c-inativo"><div class="stat-value" id="statInativo">0</div><div class="stat-label">Inativos</div></div>
+        <div class="stat-card c-saiu-grupo"><div class="stat-value" id="statSaiuGrupo">0</div><div class="stat-label">Saíram do grupo</div></div>
+        <div class="stat-card c-saiu-guilda"><div class="stat-value" id="statSaiuGuilda">0</div><div class="stat-label">Saíram da guilda</div></div>
+      </div>
+
+      <div class="section-head">
+        <h2>Gerenciar integrantes</h2>
+        <button class="btn btn-primary btn-sm" id="addMemberBtn">+ Adicionar integrante</button>
+      </div>
+
+      <div class="search-row">
+        <input type="text" id="adminSearchInput" placeholder="Pesquisar por nick...">
+      </div>
+
+      <div id="adminListWrap">
+        <div class="loading-state" id="adminLoading">
+          <div class="spinner"></div>
+          Carregando...
+        </div>
+        <div class="member-list" id="adminList" style="display:none;"></div>
+        <div class="empty-state" id="adminEmpty" style="display:none;">
+          Nenhum integrante cadastrado ainda.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>AÇAÍ PIMENTA · Painel interno da guilda</footer>
+
+<!-- ===================== MODAL: Adicionar / Editar ===================== -->
+<div class="modal-backdrop" id="memberModal">
+  <div class="modal">
+    <h3 id="memberModalTitle">Adicionar integrante</h3>
+    <p class="sub">Preencha os dados do integrante.</p>
+    <form id="memberForm">
+      <input type="hidden" id="memberFormId">
+      <div class="field">
+        <label for="memberFormNick">Nick</label>
+        <input id="memberFormNick" type="text" maxlength="30" required>
+      </div>
+      <div class="field">
+        <label for="memberFormTel">Telefone com DDD</label>
+        <input id="memberFormTel" type="tel" placeholder="Deixe em branco para manter o atual">
+      </div>
+      <div class="field">
+        <label for="memberFormSituacao">Situação</label>
+        <select id="memberFormSituacao">
+          <option value="Ativo">Ativo</option>
+          <option value="Inativo">Inativo</option>
+          <option value="Saiu do grupo">Saiu do grupo</option>
+          <option value="Saiu da guilda">Saiu da guilda</option>
+          <option value="Pendente de verificação">Pendente de verificação</option>
+        </select>
+      </div>
+      <div class="form-msg" id="memberFormMsg"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="memberFormCancel">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="memberFormSave">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== MODAL: Confirmar exclusão ===================== -->
+<div class="modal-backdrop" id="deleteModal">
+  <div class="modal">
+    <h3>Remover integrante?</h3>
+    <p class="sub">Esta ação não pode ser desfeita. O nick <strong id="deleteTargetNick"></strong> será removido permanentemente.</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="deleteCancelBtn">Cancelar</button>
+      <button type="button" class="btn btn-danger" id="deleteConfirmBtn">Remover</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: Ver telefone ===================== -->
+<div class="modal-backdrop" id="phoneModal">
+  <div class="modal">
+    <h3>Telefone cadastrado</h3>
+    <p class="sub" id="phoneTargetNick"></p>
+    <div class="phone-reveal" id="phoneValue">Carregando...</div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="phoneCloseBtn">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK (compat, compatível com JavaScript puro / sem build) -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+<script>
+// ============================================================
+// firebase-config.js
+// Configuração de conexão com o Firebase do projeto AÇAÍ PIMENTA
+// ============================================================
+//
+// Substitua os valores abaixo pelos dados do SEU projeto Firebase.
+// Você encontra esses valores em:
+// Console do Firebase > Configurações do projeto > Seus apps > Configuração do SDK
+//
+// Veja o arquivo INSTRUCOES.md para o passo a passo completo.
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDnKikHkRGzbFHFKEzwWhQ6zrPukNp0H6U",
+  authDomain: "painel-da-guilda.firebaseapp.com",
+  projectId: "painel-da-guilda",
+  storageBucket: "painel-da-guilda.firebasestorage.app",
+  messagingSenderId: "87160240856",
+  appId: "1:87160240856:web:9bad9965089ee42c56f5ad"
+};
+
+// UID da conta do líder da guilda.
+// Depois de criar a conta do líder no Firebase Authentication,
+// copie o UID dela aqui. Esse mesmo UID também deve ser colado
+// dentro do arquivo firestore.rules, no lugar indicado.
+const LEADER_UID = "COLOQUE_AQUI_O_UID_DO_LIDER";
+
+// Inicializa o Firebase (SDK "compat", compatível com JavaScript puro)
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+
+// ============================================================
+// script.js — AÇAÍ PIMENTA
+// JavaScript puro (Vanilla JS). Depende de firebase-config.js
+// (já carregado antes deste arquivo) para `auth` e `db`.
+// ============================================================
+
+const SITUACOES = ['Ativo', 'Inativo', 'Saiu do grupo', 'Saiu da guilda', 'Pendente de verificação'];
+
+const badgeClassFor = (situacao) => {
+  switch (situacao) {
+    case 'Ativo': return 'badge-ativo';
+    case 'Inativo': return 'badge-inativo';
+    case 'Saiu do grupo': return 'badge-saiu-grupo';
+    case 'Saiu da guilda': return 'badge-saiu-guilda';
+    default: return 'badge-pendente';
+  }
+};
+
+const escapeHtml = (str) =>
+  String(str).replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+
+let currentUser = null;       // usuário autenticado (anônimo ou líder)
+let isLeader = false;         // true quando o usuário logado é o líder
+let myMemberDocId = null;     // uid do visitante (usado para saber se já se cadastrou)
+
+// ============================================================
+// Navegação entre views
+// ============================================================
+
+const navButtons = document.querySelectorAll('nav.main-nav button');
+const views = document.querySelectorAll('.view');
+
+function goToView(name) {
+  views.forEach(v => v.classList.toggle('active', v.id === `view-${name}`));
+  navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === name));
+}
+
+navButtons.forEach(btn => {
+  btn.addEventListener('click', () => goToView(btn.dataset.view));
+});
+
+// ============================================================
+// Autenticação
+// ============================================================
+
+// Todo visitante recebe uma sessão anônima automaticamente.
+// Isso dá a cada pessoa um UID estável no navegador, usado para
+// vincular o cadastro dela e impedir que edite dados de outros.
+auth.onAuthStateChanged((user) => {
+  if (!user) {
+    auth.signInAnonymously().catch((err) => {
+      console.error('Falha ao iniciar sessão anônima:', err);
+    });
+    return;
+  }
+
+  currentUser = user;
+  isLeader = user.uid === LEADER_UID;
+  myMemberDocId = user.uid;
+
+  updateLeaderPill();
+  refreshCadastroButtonState();
+
+  if (isLeader) {
+    document.getElementById('painelLoginWrap').style.display = 'none';
+    document.getElementById('painelAdminWrap').style.display = 'block';
+    startAdminListener();
+  } else {
+    document.getElementById('painelLoginWrap').style.display = 'block';
+    document.getElementById('painelAdminWrap').style.display = 'none';
+    stopAdminListener();
+  }
+});
+
+function updateLeaderPill() {
+  const statusEl = document.getElementById('leaderStatus');
+  const actionBtn = document.getElementById('leaderActionBtn');
+  if (isLeader) {
+    statusEl.textContent = 'Líder conectado';
+    actionBtn.textContent = 'Sair';
+  } else {
+    statusEl.textContent = 'Visitante';
+    actionBtn.textContent = 'Entrar';
+  }
+}
+
+document.getElementById('leaderActionBtn').addEventListener('click', () => {
+  if (isLeader) {
+    auth.signOut().then(() => auth.signInAnonymously());
+  } else {
+    goToView('painel');
+  }
+});
+
+// Login do líder
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim();
+  const senha = document.getElementById('loginSenha').value;
+  const msgEl = document.getElementById('loginMsg');
+  msgEl.className = 'form-msg';
+
+  try {
+    await auth.signInWithEmailAndPassword(email, senha);
+  } catch (err) {
+    msgEl.textContent = traduzErroAuth(err);
+    msgEl.className = 'form-msg err show';
+  }
+});
+
+function traduzErroAuth(err) {
+  switch (err.code) {
+    case 'auth/invalid-email': return 'E-mail inválido.';
+    case 'auth/user-not-found':
+    case 'auth/wrong-password':
+    case 'auth/invalid-credential': return 'E-mail ou senha incorretos.';
+    case 'auth/too-many-requests': return 'Muitas tentativas. Aguarde um momento.';
+    default: return 'Não foi possível entrar. Tente novamente.';
+  }
+}
+
+// ============================================================
+// HOME — Cadastro de integrante
+// ============================================================
+
+document.getElementById('openCadastroBtn').addEventListener('click', () => {
+  document.getElementById('cadastroCard').style.display = 'block';
+  document.getElementById('openCadastroBtn').style.display = 'none';
+});
+
+function refreshCadastroButtonState() {
+  if (!myMemberDocId) return;
+  db.collection('integrantes').doc(myMemberDocId).get().then((docSnap) => {
+    if (docSnap.exists) {
+      const btn = document.getElementById('salvarCadastroBtn');
+      btn.disabled = true;
+      btn.textContent = 'Você já está cadastrado';
+    }
+  }).catch(() => {});
+}
+
+document.getElementById('cadastroForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const nick = document.getElementById('nickInput').value.trim();
+  const telefone = document.getElementById('telInput').value.trim();
+  const msgEl = document.getElementById('cadastroMsg');
+  const btn = document.getElementById('salvarCadastroBtn');
+  msgEl.className = 'form-msg';
+
+  if (!nick || !telefone) return;
+  if (!currentUser) {
+    msgEl.textContent = 'Aguarde a conexão ser estabelecida e tente novamente.';
+    msgEl.className = 'form-msg err show';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Salvando...';
+
+  try {
+    const memberRef = db.collection('integrantes').doc(currentUser.uid);
+    const existing = await memberRef.get();
+    if (existing.exists) {
+      msgEl.textContent = 'Este dispositivo já possui um cadastro enviado.';
+      msgEl.className = 'form-msg err show';
+      btn.textContent = 'Você já está cadastrado';
+      return;
+    }
+
+    await memberRef.set({
+      nick,
+      situacao: 'Pendente de verificação',
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    await memberRef.collection('privado').doc('telefone').set({
+      numero: telefone
+    });
+
+    msgEl.textContent = 'Cadastro realizado com sucesso! O líder já pode visualizar seu nick.';
+    msgEl.className = 'form-msg ok show';
+    btn.textContent = 'Cadastro enviado';
+    document.getElementById('cadastroForm').reset();
+  } catch (err) {
+    console.error(err);
+    msgEl.textContent = 'Não foi possível salvar o cadastro. Tente novamente.';
+    msgEl.className = 'form-msg err show';
+    btn.disabled = false;
+    btn.textContent = 'Salvar cadastro';
+  }
+});
+
+// ============================================================
+// LISTA PÚBLICA DE INTEGRANTES (tempo real)
+// ============================================================
+
+let publicMembers = [];
+
+db.collection('integrantes').onSnapshot((snapshot) => {
+  publicMembers = snapshot.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .sort((a, b) => (a.nick || '').localeCompare(b.nick || '', 'pt-BR', { sensitivity: 'base' }));
+  renderPublicList();
+}, (err) => {
+  console.error('Erro ao carregar integrantes:', err);
+  document.getElementById('integrantesLoading').style.display = 'none';
+  document.getElementById('integrantesEmpty').style.display = 'block';
+  document.getElementById('integrantesEmpty').textContent = 'Não foi possível carregar a lista agora.';
+});
+
+document.getElementById('searchInput').addEventListener('input', renderPublicList);
+
+function renderPublicList() {
+  const term = document.getElementById('searchInput').value.trim().toLowerCase();
+  const filtered = publicMembers.filter(m => (m.nick || '').toLowerCase().includes(term));
+
+  document.getElementById('integrantesLoading').style.display = 'none';
+  document.getElementById('integrantesCount').textContent =
+    `${publicMembers.length} integrante${publicMembers.length === 1 ? '' : 's'}`;
+
+  const listEl = document.getElementById('integrantesList');
+  const emptyEl = document.getElementById('integrantesEmpty');
+
+  if (filtered.length === 0) {
+    listEl.style.display = 'none';
+    emptyEl.style.display = 'block';
+    emptyEl.textContent = publicMembers.length === 0
+      ? 'Nenhum integrante cadastrado ainda.'
+      : 'Nenhum nick encontrado para essa pesquisa.';
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  listEl.style.display = 'flex';
+  listEl.innerHTML = filtered.map((m, i) => `
+    <div class="member-row">
+      <span class="idx">${i + 1}</span>
+      <span class="nick">${escapeHtml(m.nick || '—')}</span>
+      <span class="badge ${badgeClassFor(m.situacao)}">${escapeHtml(m.situacao || 'Pendente de verificação')}</span>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// PAINEL DO LÍDER — lista administrativa (tempo real)
+// ============================================================
+
+let adminMembers = [];
+let adminUnsubscribe = null;
+
+function startAdminListener() {
+  if (adminUnsubscribe) return;
+  adminUnsubscribe = db.collection('integrantes').onSnapshot((snapshot) => {
+    adminMembers = snapshot.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => (a.nick || '').localeCompare(b.nick || '', 'pt-BR', { sensitivity: 'base' }));
+    renderAdminList();
+    renderStats();
+  }, (err) => {
+    console.error('Erro ao carregar painel:', err);
+  });
+}
+
+function stopAdminListener() {
+  if (adminUnsubscribe) {
+    adminUnsubscribe();
+    adminUnsubscribe = null;
+  }
+}
+
+document.getElementById('adminSearchInput').addEventListener('input', renderAdminList);
+
+function renderStats() {
+  const counts = { 'Ativo': 0, 'Inativo': 0, 'Saiu do grupo': 0, 'Saiu da guilda': 0 };
+  adminMembers.forEach(m => { if (counts[m.situacao] !== undefined) counts[m.situacao]++; });
+  document.getElementById('statTotal').textContent = adminMembers.length;
+  document.getElementById('statAtivo').textContent = counts['Ativo'];
+  document.getElementById('statInativo').textContent = counts['Inativo'];
+  document.getElementById('statSaiuGrupo').textContent = counts['Saiu do grupo'];
+  document.getElementById('statSaiuGuilda').textContent = counts['Saiu da guilda'];
+}
+
+function renderAdminList() {
+  const term = document.getElementById('adminSearchInput').value.trim().toLowerCase();
+  const filtered = adminMembers.filter(m => (m.nick || '').toLowerCase().includes(term));
+
+  document.getElementById('adminLoading').style.display = 'none';
+  const listEl = document.getElementById('adminList');
+  const emptyEl = document.getElementById('adminEmpty');
+
+  if (filtered.length === 0) {
+    listEl.style.display = 'none';
+    emptyEl.style.display = 'block';
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  listEl.style.display = 'flex';
+  listEl.innerHTML = filtered.map((m, i) => `
+    <div class="member-row">
+      <span class="idx">${i + 1}</span>
+      <span class="nick">${escapeHtml(m.nick || '—')}</span>
+      <span class="badge ${badgeClassFor(m.situacao)}">${escapeHtml(m.situacao || 'Pendente de verificação')}</span>
+      <div class="actions">
+        <button class="btn btn-ghost btn-sm" data-action="phone" data-id="${m.id}" data-nick="${escapeHtml(m.nick || '')}">Telefone</button>
+        <button class="btn btn-ghost btn-sm" data-action="edit" data-id="${m.id}">Editar</button>
+        <button class="btn btn-danger btn-sm" data-action="delete" data-id="${m.id}" data-nick="${escapeHtml(m.nick || '')}">Remover</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('adminList').addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-action]');
+  if (!btn) return;
+  const { action, id, nick } = btn.dataset;
+  if (action === 'edit') openMemberModal(id);
+  if (action === 'delete') openDeleteModal(id, nick);
+  if (action === 'phone') openPhoneModal(id, nick);
+});
+
+// ---------- Adicionar / Editar integrante ----------
+
+const memberModal = document.getElementById('memberModal');
+
+document.getElementById('addMemberBtn').addEventListener('click', () => openMemberModal(null));
+document.getElementById('memberFormCancel').addEventListener('click', () => closeMemberModal());
+
+function openMemberModal(id) {
+  const form = document.getElementById('memberForm');
+  form.reset();
+  document.getElementById('memberFormMsg').className = 'form-msg';
+  document.getElementById('memberFormId').value = id || '';
+
+  if (id) {
+    const member = adminMembers.find(m => m.id === id);
+    document.getElementById('memberModalTitle').textContent = 'Editar integrante';
+    document.getElementById('memberFormNick').value = member ? member.nick : '';
+    document.getElementById('memberFormSituacao').value = member ? member.situacao : 'Ativo';
+    document.getElementById('memberFormTel').placeholder = 'Deixe em branco para manter o atual';
+  } else {
+    document.getElementById('memberModalTitle').textContent = 'Adicionar integrante';
+    document.getElementById('memberFormSituacao').value = 'Ativo';
+    document.getElementById('memberFormTel').placeholder = '(11) 91234-5678';
+  }
+  memberModal.classList.add('show');
+}
+
+function closeMemberModal() {
+  memberModal.classList.remove('show');
+}
+
+document.getElementById('memberForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = document.getElementById('memberFormId').value;
+  const nick = document.getElementById('memberFormNick').value.trim();
+  const telefone = document.getElementById('memberFormTel').value.trim();
+  const situacao = document.getElementById('memberFormSituacao').value;
+  const msgEl = document.getElementById('memberFormMsg');
+  const saveBtn = document.getElementById('memberFormSave');
+
+  if (!nick) return;
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Salvando...';
+
+  try {
+    const docId = id || db.collection('integrantes').doc().id;
+    const memberRef = db.collection('integrantes').doc(docId);
+
+    await memberRef.set({ nick, situacao }, { merge: true });
+    if (!id) {
+      await memberRef.set({
+        criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    }
+
+    if (telefone) {
+      await memberRef.collection('privado').doc('telefone').set({ numero: telefone });
+    }
+
+    closeMemberModal();
+  } catch (err) {
+    console.error(err);
+    msgEl.textContent = 'Não foi possível salvar. Tente novamente.';
+    msgEl.className = 'form-msg err show';
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Salvar';
+  }
+});
+
+// ---------- Remover integrante ----------
+
+const deleteModal = document.getElementById('deleteModal');
+let deleteTargetId = null;
+
+function openDeleteModal(id, nick) {
+  deleteTargetId = id;
+  document.getElementById('deleteTargetNick').textContent = nick || '';
+  deleteModal.classList.add('show');
+}
+
+document.getElementById('deleteCancelBtn').addEventListener('click', () => {
+  deleteModal.classList.remove('show');
+  deleteTargetId = null;
+});
+
+document.getElementById('deleteConfirmBtn').addEventListener('click', async () => {
+  if (!deleteTargetId) return;
+  const btn = document.getElementById('deleteConfirmBtn');
+  btn.disabled = true;
+  btn.textContent = 'Removendo...';
+  try {
+    await db.collection('integrantes').doc(deleteTargetId).collection('privado').doc('telefone').delete().catch(() => {});
+    await db.collection('integrantes').doc(deleteTargetId).delete();
+    deleteModal.classList.remove('show');
+  } catch (err) {
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Remover';
+    deleteTargetId = null;
+  }
+});
+
+// ---------- Ver telefone ----------
+
+const phoneModal = document.getElementById('phoneModal');
+
+async function openPhoneModal(id, nick) {
+  document.getElementById('phoneTargetNick').textContent = nick || '';
+  document.getElementById('phoneValue').textContent = 'Carregando...';
+  phoneModal.classList.add('show');
+
+  try {
+    const snap = await db.collection('integrantes').doc(id).collection('privado').doc('telefone').get();
+    document.getElementById('phoneValue').textContent = snap.exists ? snap.data().numero : 'Telefone não informado.';
+  } catch (err) {
+    console.error(err);
+    document.getElementById('phoneValue').textContent = 'Não foi possível carregar o telefone.';
+  }
+}
+
+document.getElementById('phoneCloseBtn').addEventListener('click', () => {
+  phoneModal.classList.remove('show');
+});
+
+// Fecha modais clicando fora do conteúdo
+[memberModal, deleteModal, phoneModal].forEach(modal => {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.remove('show');
+  });
+});
+
+</script>
+</body>
+</html>
