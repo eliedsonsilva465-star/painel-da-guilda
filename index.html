@@ -516,6 +516,78 @@ footer {
   .member-row .actions { width: 100%; justify-content: flex-start; margin-top: 4px; }
 }
 
+/* ============================================================
+   Ajuste de tamanho — fontes e botões maiores
+   ============================================================ */
+
+.brand { font-size: 23px; }
+.brand small { font-size: 12px; }
+
+nav.main-nav button {
+  font-size: 17px;
+  padding: 10px 20px;
+}
+
+.leader-pill { font-size: 14.5px; }
+.leader-pill button {
+  font-size: 15px;
+  padding: 9px 16px;
+}
+
+.hero h1 { font-size: 58px; }
+.hero p { font-size: 18px; max-width: 480px; }
+.hero .tag { font-size: 13px; padding: 6px 14px; }
+
+.btn {
+  font-size: 16.5px;
+  padding: 14px 26px;
+  border-radius: 12px;
+}
+.btn-sm {
+  font-size: 14.5px;
+  padding: 9px 15px;
+  border-radius: 10px;
+}
+
+.card { max-width: 460px; padding: 30px; }
+.card h2 { font-size: 25px; }
+.card .sub { font-size: 15px; }
+
+.field label { font-size: 14px; }
+.field input, .field select {
+  font-size: 16.5px;
+  padding: 13px 15px;
+}
+.field .hint { font-size: 13px; }
+.form-msg { font-size: 15px; }
+
+.section-head h2 { font-size: 27px; }
+.section-head .count { font-size: 14.5px; padding: 6px 14px; }
+
+.search-row input {
+  font-size: 16.5px;
+  padding: 13px 16px;
+}
+
+.stat-value { font-size: 30px; }
+.stat-label { font-size: 12.5px; }
+.stat-card { padding: 20px 16px; }
+
+.member-row { padding: 15px 18px; gap: 16px; }
+.member-row .idx { font-size: 13.5px; width: 30px; }
+.member-row .nick { font-size: 17.5px; }
+
+.badge { font-size: 13px; padding: 5px 12px; }
+
+.empty-state, .loading-state { font-size: 16px; padding: 56px 20px; }
+
+.modal { padding: 28px; max-width: 460px; }
+.modal h3 { font-size: 21px; }
+.modal .sub { font-size: 14.5px; }
+.phone-reveal { font-size: 17px; padding: 12px 14px; }
+
+footer { font-size: 13.5px; }
+
 </style>
 </head>
 <body>
@@ -743,7 +815,14 @@ const firebaseConfig = {
 // Depois de criar a conta do líder no Firebase Authentication,
 // copie o UID dela aqui. Esse mesmo UID também deve ser colado
 // dentro do arquivo firestore.rules, no lugar indicado.
-const LEADER_UID = "5qyj4TtsSETPTzRqsQGXUWdAl2i1";
+// Lista de UIDs com permissão de líder.
+// Para adicionar mais uma pessoa, crie a conta dela em
+// Authentication > Users, copie o UID gerado e acrescente
+// uma nova linha "UID_AQUI" dentro dos colchetes abaixo.
+const LEADER_UIDS = [
+  "COLOQUE_AQUI_O_UID_DO_LIDER_1"
+  // , "COLOQUE_AQUI_O_UID_DO_LIDER_2"
+];
 
 // Inicializa o Firebase (SDK "compat", compatível com JavaScript puro)
 firebase.initializeApp(firebaseConfig);
@@ -810,7 +889,7 @@ auth.onAuthStateChanged((user) => {
   }
 
   currentUser = user;
-  isLeader = user.uid === LEADER_UID;
+  isLeader = LEADER_UIDS.includes(user.uid);
   myMemberDocId = user.uid;
 
   updateLeaderPill();
