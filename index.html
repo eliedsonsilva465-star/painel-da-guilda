@@ -567,6 +567,193 @@ main {
   margin-top: 4px;
 }
 
+/* ---------- sub-navegação do painel do líder ---------- */
+
+.leader-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+nav.sub-nav {
+  display: flex;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 4px;
+  border-radius: var(--radius-md);
+}
+
+nav.sub-nav button {
+  position: relative;
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+nav.sub-nav button:hover { color: var(--text); }
+nav.sub-nav button.active {
+  background: linear-gradient(135deg, var(--purple-deep), var(--red-deep));
+  color: #fff;
+}
+
+.notif-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  margin-left: 6px;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  vertical-align: middle;
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+.leader-settings {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.leader-settings label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.subview { display: none; }
+.subview.active { display: block; animation: fadeIn .2s ease; }
+
+/* ---------- avisos ---------- */
+
+.avisos-list { display: flex; flex-direction: column; gap: 12px; }
+
+.aviso-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+}
+.aviso-card.importante {
+  border-color: rgba(251, 191, 36, 0.5);
+  background: linear-gradient(180deg, rgba(251, 191, 36, 0.06), var(--surface) 40%);
+}
+
+.aviso-card .aviso-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.aviso-card .aviso-titulo {
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.aviso-card .aviso-data {
+  font-size: 12px;
+  color: var(--text-faint);
+  white-space: nowrap;
+  flex: none;
+}
+.aviso-card .aviso-descricao {
+  color: var(--text-dim);
+  font-size: 14.5px;
+  line-height: 1.55;
+  white-space: pre-line;
+}
+.aviso-card .aviso-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.badge-importante {
+  background: rgba(251, 191, 36, 0.18);
+  color: #fcd34d;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.field textarea {
+  width: 100%;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 11px 13px;
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  resize: vertical;
+  transition: border-color .15s ease;
+}
+.field textarea:focus { border-color: var(--purple); }
+
+.field-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+/* ---------- histórico administrativo ---------- */
+
+.historico-filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.historico-filters select,
+.historico-filters input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  outline: none;
+}
+.historico-filters input[type="text"] { flex: 1; min-width: 140px; }
+.historico-filters select:focus,
+.historico-filters input:focus { border-color: var(--purple); }
+
+.historico-list { display: flex; flex-direction: column; gap: 6px; }
+
+.historico-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  font-size: 13.5px;
+}
+.historico-row .h-tipo { font-weight: 700; }
+.historico-row .h-desc { color: var(--text-dim); margin-top: 2px; }
+.historico-row .h-meta { color: var(--text-faint); font-size: 11.5px; margin-top: 4px; }
+
 /* ---------- footer ---------- */
 
 footer {
@@ -660,6 +847,24 @@ nav.main-nav button {
 
 footer { font-size: 15px; }
 
+nav.sub-nav button { font-size: 16.5px; padding: 10px 18px; }
+.notif-badge { font-size: 12.5px; min-width: 20px; height: 20px; }
+.leader-settings { font-size: 14.5px; gap: 20px; }
+
+.aviso-card { padding: 20px 22px; }
+.aviso-card .aviso-titulo { font-size: 19px; }
+.aviso-card .aviso-descricao { font-size: 16px; }
+.aviso-card .aviso-data { font-size: 13px; }
+.badge-importante { font-size: 12.5px; padding: 4px 11px; }
+
+.field textarea { font-size: 16.5px; padding: 13px 15px; }
+.field-checkbox label { font-size: 15px; }
+
+.historico-filters select,
+.historico-filters input { font-size: 14.5px; padding: 10px 13px; }
+.historico-row { font-size: 15px; padding: 13px 16px; }
+.historico-row .h-meta { font-size: 13px; }
+
 </style>
 </head>
 <body>
@@ -676,6 +881,7 @@ footer { font-size: 15px; }
   <nav class="main-nav">
     <button data-view="home" class="active">Início</button>
     <button data-view="integrantes">Integrantes</button>
+    <button data-view="avisos">Avisos</button>
     <button data-view="painel">Painel do líder</button>
   </nav>
 
@@ -698,7 +904,7 @@ footer { font-size: 15px; }
 
     <div class="card" id="cadastroCard" style="display:none;">
       <h2>Cadastrar meu Nick</h2>
-      <p class="sub">Seu telefone fica visível apenas para o líder da guilda.</p>
+      <p class="sub">Seu cadastro fica aguardando aprovação do líder. Seu telefone fica visível apenas para ele.</p>
 
       <form id="cadastroForm">
         <div class="field">
@@ -741,6 +947,25 @@ footer { font-size: 15px; }
     </div>
   </section>
 
+  <!-- ===================== CENTRAL DE AVISOS ===================== -->
+  <section id="view-avisos" class="view">
+    <div class="section-head">
+      <h2>Central de Avisos</h2>
+      <button class="btn btn-primary btn-sm" id="addAvisoBtn" style="display:none;">+ Novo aviso</button>
+    </div>
+
+    <div id="avisosListWrap">
+      <div class="loading-state" id="avisosLoading">
+        <div class="spinner"></div>
+        Carregando avisos...
+      </div>
+      <div class="avisos-list" id="avisosList" style="display:none;"></div>
+      <div class="empty-state" id="avisosEmpty" style="display:none;">
+        Nenhum aviso publicado ainda.
+      </div>
+    </div>
+  </section>
+
   <!-- ===================== PAINEL DO LÍDER ===================== -->
   <section id="view-painel" class="view">
 
@@ -765,33 +990,108 @@ footer { font-size: 15px; }
 
     <div id="painelAdminWrap" style="display:none;">
 
-      <div class="stat-grid">
-        <div class="stat-card c-total"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total</div></div>
-        <div class="stat-card c-ativo"><div class="stat-value" id="statAtivo">0</div><div class="stat-label">Ativos</div></div>
-        <div class="stat-card c-inativo"><div class="stat-value" id="statInativo">0</div><div class="stat-label">Inativos</div></div>
-        <div class="stat-card c-saiu-grupo"><div class="stat-value" id="statSaiuGrupo">0</div><div class="stat-label">Saíram do grupo</div></div>
-        <div class="stat-card c-saiu-guilda"><div class="stat-value" id="statSaiuGuilda">0</div><div class="stat-label">Saíram da guilda</div></div>
-      </div>
+      <div class="leader-top-row">
+        <nav class="sub-nav" id="painelSubNav">
+          <button data-subview="integrantes" class="active">Integrantes</button>
+          <button data-subview="solicitacoes">
+            Solicitações
+            <span class="notif-badge" id="solicitacoesBadge" style="display:none;">0</span>
+          </button>
+          <button data-subview="historico">Histórico</button>
+        </nav>
 
-      <div class="section-head">
-        <h2>Gerenciar integrantes</h2>
-        <button class="btn btn-primary btn-sm" id="addMemberBtn">+ Adicionar integrante</button>
-      </div>
-
-      <div class="search-row">
-        <input type="text" id="adminSearchInput" placeholder="Pesquisar por nick...">
-      </div>
-
-      <div id="adminListWrap">
-        <div class="loading-state" id="adminLoading">
-          <div class="spinner"></div>
-          Carregando...
-        </div>
-        <div class="member-list" id="adminList" style="display:none;"></div>
-        <div class="empty-state" id="adminEmpty" style="display:none;">
-          Nenhum integrante cadastrado ainda.
+        <div class="leader-settings">
+          <label><input type="checkbox" id="toggleSom" checked> Som</label>
+          <label><input type="checkbox" id="toggleVisual" checked> Bolinha</label>
         </div>
       </div>
+
+      <!-- ---------- SUBVIEW: Integrantes ---------- -->
+      <div class="subview active" id="subview-integrantes">
+        <div class="stat-grid">
+          <div class="stat-card c-total"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total</div></div>
+          <div class="stat-card c-ativo"><div class="stat-value" id="statAtivo">0</div><div class="stat-label">Ativos</div></div>
+          <div class="stat-card c-inativo"><div class="stat-value" id="statInativo">0</div><div class="stat-label">Inativos</div></div>
+          <div class="stat-card c-saiu-grupo"><div class="stat-value" id="statSaiuGrupo">0</div><div class="stat-label">Saíram do grupo</div></div>
+          <div class="stat-card c-saiu-guilda"><div class="stat-value" id="statSaiuGuilda">0</div><div class="stat-label">Saíram da guilda</div></div>
+        </div>
+
+        <div class="section-head">
+          <h2>Gerenciar integrantes</h2>
+          <button class="btn btn-primary btn-sm" id="addMemberBtn">+ Adicionar integrante</button>
+        </div>
+
+        <div class="search-row">
+          <input type="text" id="adminSearchInput" placeholder="Pesquisar por nick...">
+        </div>
+
+        <div id="adminListWrap">
+          <div class="loading-state" id="adminLoading">
+            <div class="spinner"></div>
+            Carregando...
+          </div>
+          <div class="member-list" id="adminList" style="display:none;"></div>
+          <div class="empty-state" id="adminEmpty" style="display:none;">
+            Nenhum integrante cadastrado ainda.
+          </div>
+        </div>
+      </div>
+
+      <!-- ---------- SUBVIEW: Solicitações de Cadastro ---------- -->
+      <div class="subview" id="subview-solicitacoes">
+        <div class="section-head">
+          <h2>Solicitações de Cadastro</h2>
+          <span class="count" id="solicitacoesCount">0 pendentes</span>
+        </div>
+
+        <div id="solicitacoesListWrap">
+          <div class="loading-state" id="solicitacoesLoading">
+            <div class="spinner"></div>
+            Carregando...
+          </div>
+          <div class="member-list" id="solicitacoesList" style="display:none;"></div>
+          <div class="empty-state" id="solicitacoesEmpty" style="display:none;">
+            Nenhuma solicitação pendente.
+          </div>
+        </div>
+      </div>
+
+      <!-- ---------- SUBVIEW: Histórico Administrativo ---------- -->
+      <div class="subview" id="subview-historico">
+        <div class="section-head">
+          <h2>Histórico Administrativo</h2>
+        </div>
+
+        <div class="historico-filters">
+          <select id="historicoFiltroTipo">
+            <option value="">Todos os tipos</option>
+            <option value="Integrante adicionado">Integrante adicionado</option>
+            <option value="Integrante removido">Integrante removido</option>
+            <option value="Nick alterado">Nick alterado</option>
+            <option value="Telefone alterado">Telefone alterado</option>
+            <option value="Situação alterada">Situação alterada</option>
+            <option value="Cadastro aprovado">Cadastro aprovado</option>
+            <option value="Cadastro recusado">Cadastro recusado</option>
+            <option value="Aviso publicado">Aviso publicado</option>
+            <option value="Aviso editado">Aviso editado</option>
+            <option value="Aviso excluído">Aviso excluído</option>
+          </select>
+          <input type="date" id="historicoFiltroData">
+          <input type="text" id="historicoFiltroNick" placeholder="Filtrar por nick...">
+        </div>
+
+        <div id="historicoListWrap">
+          <div class="loading-state" id="historicoLoading">
+            <div class="spinner"></div>
+            Carregando...
+          </div>
+          <div class="historico-list" id="historicoList" style="display:none;"></div>
+          <div class="empty-state" id="historicoEmpty" style="display:none;">
+            Nenhum registro encontrado.
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -889,6 +1189,57 @@ footer { font-size: 15px; }
         <button type="submit" class="btn btn-primary" id="warningAddBtn">Adicionar advertência</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- ===================== MODAL: Criar / Editar aviso ===================== -->
+<div class="modal-backdrop" id="avisoModal">
+  <div class="modal modal-wide">
+    <h3 id="avisoModalTitle">Novo aviso</h3>
+    <p class="sub">Este aviso será visível para todos os integrantes.</p>
+    <form id="avisoForm">
+      <input type="hidden" id="avisoFormId">
+      <div class="field">
+        <label for="avisoFormTitulo">Título</label>
+        <input id="avisoFormTitulo" type="text" maxlength="80" required>
+      </div>
+      <div class="field">
+        <label for="avisoFormDescricao">Descrição</label>
+        <textarea id="avisoFormDescricao" rows="4" maxlength="600" required></textarea>
+      </div>
+      <div class="field field-checkbox">
+        <label><input type="checkbox" id="avisoFormImportante"> Marcar como importante</label>
+      </div>
+      <div class="form-msg" id="avisoFormMsg"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="avisoFormCancel">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="avisoFormSave">Publicar aviso</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== MODAL: Confirmar exclusão de aviso ===================== -->
+<div class="modal-backdrop" id="deleteAvisoModal">
+  <div class="modal">
+    <h3>Remover aviso?</h3>
+    <p class="sub">Esta ação não pode ser desfeita. O aviso <strong id="deleteAvisoTitulo"></strong> será excluído.</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="deleteAvisoCancelBtn">Cancelar</button>
+      <button type="button" class="btn btn-danger" id="deleteAvisoConfirmBtn">Remover</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: Solicitação (telefone) ===================== -->
+<div class="modal-backdrop" id="solicitacaoRecusarModal">
+  <div class="modal">
+    <h3>Recusar solicitação?</h3>
+    <p class="sub">O cadastro de <strong id="recusarTargetNick"></strong> será removido das solicitações pendentes.</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="recusarCancelBtn">Cancelar</button>
+      <button type="button" class="btn btn-danger" id="recusarConfirmBtn">Recusar</button>
+    </div>
   </div>
 </div>
 
@@ -1005,12 +1356,19 @@ auth.onAuthStateChanged((user) => {
   if (isLeader) {
     document.getElementById('painelLoginWrap').style.display = 'none';
     document.getElementById('painelAdminWrap').style.display = 'block';
+    document.getElementById('addAvisoBtn').style.display = 'inline-flex';
     startAdminListener();
+    startLeaderNotifications();
+    startHistoricoListener();
   } else {
     document.getElementById('painelLoginWrap').style.display = 'block';
     document.getElementById('painelAdminWrap').style.display = 'none';
+    document.getElementById('addAvisoBtn').style.display = 'none';
     stopAdminListener();
+    stopLeaderNotifications();
+    stopHistoricoListener();
   }
+  renderAvisosList();
 });
 
 function updateLeaderPill() {
@@ -1071,11 +1429,17 @@ document.getElementById('openCadastroBtn').addEventListener('click', () => {
 
 function refreshCadastroButtonState() {
   if (!myMemberDocId) return;
-  db.collection('integrantes').doc(myMemberDocId).get().then((docSnap) => {
-    if (docSnap.exists) {
-      const btn = document.getElementById('salvarCadastroBtn');
+  const btn = document.getElementById('salvarCadastroBtn');
+  Promise.all([
+    db.collection('integrantes').doc(myMemberDocId).get(),
+    db.collection('solicitacoes').doc(myMemberDocId).get()
+  ]).then(([memberSnap, reqSnap]) => {
+    if (memberSnap.exists) {
       btn.disabled = true;
-      btn.textContent = 'Você já está cadastrado';
+      btn.textContent = 'Você já é integrante da guilda';
+    } else if (reqSnap.exists) {
+      btn.disabled = true;
+      btn.textContent = 'Aguardando aprovação do líder';
     }
   }).catch(() => {});
 }
@@ -1096,35 +1460,39 @@ document.getElementById('cadastroForm').addEventListener('submit', async (e) => 
   }
 
   btn.disabled = true;
-  btn.textContent = 'Salvando...';
+  btn.textContent = 'Enviando...';
 
   try {
+    const reqRef = db.collection('solicitacoes').doc(currentUser.uid);
     const memberRef = db.collection('integrantes').doc(currentUser.uid);
-    const existing = await memberRef.get();
-    if (existing.exists) {
-      msgEl.textContent = 'Este dispositivo já possui um cadastro enviado.';
+    const [existingMember, existingReq] = await Promise.all([memberRef.get(), reqRef.get()]);
+
+    if (existingMember.exists) {
+      msgEl.textContent = 'Você já é integrante da guilda.';
       msgEl.className = 'form-msg err show';
-      btn.textContent = 'Você já está cadastrado';
+      btn.textContent = 'Você já é integrante da guilda';
+      return;
+    }
+    if (existingReq.exists) {
+      msgEl.textContent = 'Você já enviou uma solicitação. Aguarde a aprovação do líder.';
+      msgEl.className = 'form-msg err show';
+      btn.textContent = 'Aguardando aprovação do líder';
       return;
     }
 
-    await memberRef.set({
+    await reqRef.set({
       nick,
-      situacao: 'Pendente de verificação',
+      telefone,
       criadoEm: firebase.firestore.FieldValue.serverTimestamp()
     });
 
-    await memberRef.collection('privado').doc('telefone').set({
-      numero: telefone
-    });
-
-    msgEl.textContent = 'Cadastro realizado com sucesso! O líder já pode visualizar seu nick.';
+    msgEl.textContent = 'Cadastro enviado! Aguarde a aprovação do líder para aparecer na lista oficial.';
     msgEl.className = 'form-msg ok show';
-    btn.textContent = 'Cadastro enviado';
+    btn.textContent = 'Aguardando aprovação do líder';
     document.getElementById('cadastroForm').reset();
   } catch (err) {
     console.error(err);
-    msgEl.textContent = 'Não foi possível salvar o cadastro. Tente novamente.';
+    msgEl.textContent = 'Não foi possível enviar o cadastro. Tente novamente.';
     msgEl.className = 'form-msg err show';
     btn.disabled = false;
     btn.textContent = 'Salvar cadastro';
@@ -1181,6 +1549,170 @@ function renderPublicList() {
     </div>
   `).join('');
 }
+
+// ============================================================
+// CENTRAL DE AVISOS (pública, tempo real)
+// ============================================================
+
+let avisosCache = [];
+
+db.collection('avisos').onSnapshot((snapshot) => {
+  avisosCache = snapshot.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .sort((a, b) => {
+      if (!!a.importante !== !!b.importante) return a.importante ? -1 : 1;
+      const ta = a.criadoEm && a.criadoEm.toMillis ? a.criadoEm.toMillis() : 0;
+      const tb = b.criadoEm && b.criadoEm.toMillis ? b.criadoEm.toMillis() : 0;
+      return tb - ta;
+    });
+  renderAvisosList();
+}, (err) => {
+  console.error('Erro ao carregar avisos:', err);
+  document.getElementById('avisosLoading').style.display = 'none';
+  document.getElementById('avisosEmpty').style.display = 'block';
+  document.getElementById('avisosEmpty').textContent = 'Não foi possível carregar os avisos agora.';
+});
+
+function renderAvisosList() {
+  document.getElementById('avisosLoading').style.display = 'none';
+  const listEl = document.getElementById('avisosList');
+  const emptyEl = document.getElementById('avisosEmpty');
+
+  if (avisosCache.length === 0) {
+    listEl.style.display = 'none';
+    emptyEl.style.display = 'block';
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  listEl.style.display = 'flex';
+  listEl.innerHTML = avisosCache.map(a => {
+    const data = a.criadoEm && a.criadoEm.toDate ? a.criadoEm.toDate().toLocaleString('pt-BR') : '';
+    return `
+      <div class="aviso-card ${a.importante ? 'importante' : ''}">
+        <div class="aviso-head">
+          <div class="aviso-titulo">
+            ${escapeHtml(a.titulo || '')}
+            ${a.importante ? '<span class="badge-importante">IMPORTANTE</span>' : ''}
+          </div>
+          <div class="aviso-data">${data}</div>
+        </div>
+        <div class="aviso-descricao">${escapeHtml(a.descricao || '')}</div>
+        ${isLeader ? `
+          <div class="aviso-actions">
+            <button class="btn btn-ghost btn-sm" data-action="avisoEdit" data-id="${a.id}">Editar</button>
+            <button class="btn btn-danger btn-sm" data-action="avisoDelete" data-id="${a.id}" data-titulo="${escapeHtml(a.titulo || '')}">Excluir</button>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+document.getElementById('avisosList').addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-action]');
+  if (!btn) return;
+  const { action, id, titulo } = btn.dataset;
+  if (action === 'avisoEdit') openAvisoModal(id);
+  if (action === 'avisoDelete') openDeleteAvisoModal(id, titulo);
+});
+
+const avisoModal = document.getElementById('avisoModal');
+
+document.getElementById('addAvisoBtn').addEventListener('click', () => openAvisoModal(null));
+document.getElementById('avisoFormCancel').addEventListener('click', () => closeAvisoModal());
+
+function openAvisoModal(id) {
+  const form = document.getElementById('avisoForm');
+  form.reset();
+  document.getElementById('avisoFormMsg').className = 'form-msg';
+  document.getElementById('avisoFormId').value = id || '';
+
+  if (id) {
+    const aviso = avisosCache.find(a => a.id === id);
+    document.getElementById('avisoModalTitle').textContent = 'Editar aviso';
+    document.getElementById('avisoFormTitulo').value = aviso ? aviso.titulo : '';
+    document.getElementById('avisoFormDescricao').value = aviso ? aviso.descricao : '';
+    document.getElementById('avisoFormImportante').checked = !!(aviso && aviso.importante);
+  } else {
+    document.getElementById('avisoModalTitle').textContent = 'Novo aviso';
+  }
+  avisoModal.classList.add('show');
+}
+
+function closeAvisoModal() {
+  avisoModal.classList.remove('show');
+}
+
+document.getElementById('avisoForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = document.getElementById('avisoFormId').value;
+  const titulo = document.getElementById('avisoFormTitulo').value.trim();
+  const descricao = document.getElementById('avisoFormDescricao').value.trim();
+  const importante = document.getElementById('avisoFormImportante').checked;
+  const msgEl = document.getElementById('avisoFormMsg');
+  const saveBtn = document.getElementById('avisoFormSave');
+  msgEl.className = 'form-msg';
+
+  if (!titulo || !descricao) return;
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Salvando...';
+
+  try {
+    const docId = id || db.collection('avisos').doc().id;
+    const ref = db.collection('avisos').doc(docId);
+    const payload = { titulo, descricao, importante };
+    if (!id) {
+      payload.criadoEm = firebase.firestore.FieldValue.serverTimestamp();
+      payload.autorUid = currentUser.uid;
+    } else {
+      payload.atualizadoEm = firebase.firestore.FieldValue.serverTimestamp();
+    }
+    await ref.set(payload, { merge: true });
+    await logHistorico(id ? 'Aviso editado' : 'Aviso publicado', '', `Título: ${titulo}`);
+    closeAvisoModal();
+  } catch (err) {
+    console.error(err);
+    msgEl.textContent = 'Não foi possível salvar o aviso.';
+    msgEl.className = 'form-msg err show';
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Publicar aviso';
+  }
+});
+
+let deleteAvisoTargetId = null;
+let deleteAvisoTargetTitulo = '';
+
+function openDeleteAvisoModal(id, titulo) {
+  deleteAvisoTargetId = id;
+  deleteAvisoTargetTitulo = titulo || '';
+  document.getElementById('deleteAvisoTitulo').textContent = titulo || '';
+  document.getElementById('deleteAvisoModal').classList.add('show');
+}
+
+document.getElementById('deleteAvisoCancelBtn').addEventListener('click', () => {
+  document.getElementById('deleteAvisoModal').classList.remove('show');
+  deleteAvisoTargetId = null;
+});
+
+document.getElementById('deleteAvisoConfirmBtn').addEventListener('click', async () => {
+  if (!deleteAvisoTargetId) return;
+  const btn = document.getElementById('deleteAvisoConfirmBtn');
+  btn.disabled = true;
+  btn.textContent = 'Removendo...';
+  try {
+    await db.collection('avisos').doc(deleteAvisoTargetId).delete();
+    await logHistorico('Aviso excluído', '', `Título: ${deleteAvisoTargetTitulo}`);
+    document.getElementById('deleteAvisoModal').classList.remove('show');
+  } catch (err) {
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Remover';
+    deleteAvisoTargetId = null;
+  }
+});
 
 // ============================================================
 // PAINEL DO LÍDER — lista administrativa (tempo real)
@@ -1266,9 +1798,339 @@ document.getElementById('adminList').addEventListener('click', (e) => {
   if (action === 'warnings') openWarningsModal(id, nick);
 });
 
+// ============================================================
+// Sub-navegação do painel do líder (Integrantes / Solicitações / Histórico)
+// ============================================================
+
+const subNavButtons = document.querySelectorAll('nav.sub-nav button');
+const subviews = document.querySelectorAll('.subview');
+
+subNavButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    subviews.forEach(v => v.classList.toggle('active', v.id === `subview-${btn.dataset.subview}`));
+    subNavButtons.forEach(b => b.classList.toggle('active', b === btn));
+    if (btn.dataset.subview === 'solicitacoes') markSolicitacoesSeen();
+  });
+});
+
+// ============================================================
+// Histórico Administrativo (log de ações do líder)
+// ============================================================
+
+async function logHistorico(tipo, nick, descricao) {
+  if (!isLeader || !currentUser) return;
+  try {
+    await db.collection('historico').add({
+      tipo,
+      nick: nick || '',
+      descricao: descricao || '',
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+      adminUid: currentUser.uid,
+      adminEmail: currentUser.email || ''
+    });
+  } catch (err) {
+    console.error('Erro ao registrar histórico:', err);
+  }
+}
+
+let historicoCache = [];
+let historicoUnsubscribe = null;
+
+function startHistoricoListener() {
+  if (historicoUnsubscribe) return;
+  historicoUnsubscribe = db.collection('historico')
+    .orderBy('criadoEm', 'desc')
+    .limit(300)
+    .onSnapshot((snapshot) => {
+      historicoCache = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderHistoricoList();
+    }, (err) => {
+      console.error('Erro ao carregar histórico:', err);
+    });
+}
+
+function stopHistoricoListener() {
+  if (historicoUnsubscribe) { historicoUnsubscribe(); historicoUnsubscribe = null; }
+  historicoCache = [];
+}
+
+function renderHistoricoList() {
+  document.getElementById('historicoLoading').style.display = 'none';
+
+  const tipoFiltro = document.getElementById('historicoFiltroTipo').value;
+  const dataFiltro = document.getElementById('historicoFiltroData').value;
+  const nickFiltro = document.getElementById('historicoFiltroNick').value.trim().toLowerCase();
+
+  const filtered = historicoCache.filter(h => {
+    if (tipoFiltro && h.tipo !== tipoFiltro) return false;
+    if (nickFiltro && !(h.nick || '').toLowerCase().includes(nickFiltro)) return false;
+    if (dataFiltro) {
+      const d = h.criadoEm && h.criadoEm.toDate ? h.criadoEm.toDate() : null;
+      if (!d) return false;
+      const localStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      if (localStr !== dataFiltro) return false;
+    }
+    return true;
+  });
+
+  const listEl = document.getElementById('historicoList');
+  const emptyEl = document.getElementById('historicoEmpty');
+
+  if (filtered.length === 0) {
+    listEl.style.display = 'none';
+    emptyEl.style.display = 'block';
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  listEl.style.display = 'flex';
+  listEl.innerHTML = filtered.map(h => {
+    const d = h.criadoEm && h.criadoEm.toDate ? h.criadoEm.toDate() : null;
+    const dataStr = d ? d.toLocaleString('pt-BR') : '';
+    return `
+      <div class="historico-row">
+        <div class="h-tipo">${escapeHtml(h.tipo || '')}${h.nick ? ' — ' + escapeHtml(h.nick) : ''}</div>
+        ${h.descricao ? `<div class="h-desc">${escapeHtml(h.descricao)}</div>` : ''}
+        <div class="h-meta">${dataStr}${h.adminEmail ? ' · ' + escapeHtml(h.adminEmail) : ''}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+document.getElementById('historicoFiltroTipo').addEventListener('change', renderHistoricoList);
+document.getElementById('historicoFiltroData').addEventListener('change', renderHistoricoList);
+document.getElementById('historicoFiltroNick').addEventListener('input', renderHistoricoList);
+
+// ============================================================
+// Solicitações de Cadastro (aprovação do líder)
+// ============================================================
+
+let solicitacoesCache = [];
+let solicitacoesUnsubscribe = null;
+let leaderStateUnsubscribe = null;
+let lastSeenSolicitacoes = null;
+let solicitacoesInitialLoadDone = false;
+
+function startLeaderNotifications() {
+  if (!currentUser) return;
+
+  if (leaderStateUnsubscribe) leaderStateUnsubscribe();
+  leaderStateUnsubscribe = db.collection('leaderState').doc(currentUser.uid).onSnapshot((snap) => {
+    lastSeenSolicitacoes = (snap.exists && snap.data().lastSeenSolicitacoes) ? snap.data().lastSeenSolicitacoes : null;
+    computeNotifBadge();
+  }, (err) => console.error(err));
+
+  if (solicitacoesUnsubscribe) solicitacoesUnsubscribe();
+  solicitacoesInitialLoadDone = false;
+  solicitacoesUnsubscribe = db.collection('solicitacoes').onSnapshot((snapshot) => {
+    solicitacoesCache = snapshot.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => {
+        const ta = a.criadoEm && a.criadoEm.toMillis ? a.criadoEm.toMillis() : 0;
+        const tb = b.criadoEm && b.criadoEm.toMillis ? b.criadoEm.toMillis() : 0;
+        return tb - ta;
+      });
+
+    renderSolicitacoesList();
+    computeNotifBadge();
+
+    if (solicitacoesInitialLoadDone) {
+      const hasNew = snapshot.docChanges().some(c => c.type === 'added');
+      if (hasNew) playNotificationSound();
+    }
+    solicitacoesInitialLoadDone = true;
+  }, (err) => console.error(err));
+}
+
+function stopLeaderNotifications() {
+  if (leaderStateUnsubscribe) { leaderStateUnsubscribe(); leaderStateUnsubscribe = null; }
+  if (solicitacoesUnsubscribe) { solicitacoesUnsubscribe(); solicitacoesUnsubscribe = null; }
+  solicitacoesCache = [];
+  solicitacoesInitialLoadDone = false;
+  document.getElementById('solicitacoesBadge').style.display = 'none';
+}
+
+function computeNotifBadge() {
+  const badgeEl = document.getElementById('solicitacoesBadge');
+  const visualEnabled = localStorage.getItem('acaiPimenta_visual') !== 'off';
+  if (!visualEnabled) { badgeEl.style.display = 'none'; return; }
+
+  const lastSeenMillis = (lastSeenSolicitacoes && lastSeenSolicitacoes.toMillis) ? lastSeenSolicitacoes.toMillis() : 0;
+  const unseen = solicitacoesCache.filter(s => {
+    const t = s.criadoEm && s.criadoEm.toMillis ? s.criadoEm.toMillis() : 0;
+    return t > lastSeenMillis;
+  }).length;
+
+  if (unseen <= 0) {
+    badgeEl.style.display = 'none';
+  } else {
+    badgeEl.textContent = unseen > 99 ? '99+' : String(unseen);
+    badgeEl.style.display = 'inline-flex';
+  }
+}
+
+function markSolicitacoesSeen() {
+  if (!currentUser || !isLeader) return;
+  db.collection('leaderState').doc(currentUser.uid).set({
+    lastSeenSolicitacoes: firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge: true }).catch(err => console.error(err));
+}
+
+function renderSolicitacoesList() {
+  document.getElementById('solicitacoesLoading').style.display = 'none';
+  document.getElementById('solicitacoesCount').textContent =
+    `${solicitacoesCache.length} pendente${solicitacoesCache.length === 1 ? '' : 's'}`;
+
+  const listEl = document.getElementById('solicitacoesList');
+  const emptyEl = document.getElementById('solicitacoesEmpty');
+
+  if (solicitacoesCache.length === 0) {
+    listEl.style.display = 'none';
+    emptyEl.style.display = 'block';
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  listEl.style.display = 'flex';
+  listEl.innerHTML = solicitacoesCache.map((s) => {
+    const data = s.criadoEm && s.criadoEm.toDate ? s.criadoEm.toDate().toLocaleString('pt-BR') : 'agora mesmo';
+    return `
+      <div class="member-row">
+        <div class="nick-wrap">
+          <span class="nick">${escapeHtml(s.nick || '—')}</span>
+          <span class="player-id">${escapeHtml(s.telefone || '—')} · ${data}</span>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary btn-sm" data-action="aprovar" data-id="${s.id}">Aprovar</button>
+          <button class="btn btn-danger btn-sm" data-action="recusar" data-id="${s.id}" data-nick="${escapeHtml(s.nick || '')}">Recusar</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+document.getElementById('solicitacoesList').addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-action]');
+  if (!btn) return;
+  const { action, id, nick } = btn.dataset;
+  if (action === 'aprovar') aprovarSolicitacao(id, btn);
+  if (action === 'recusar') openRecusarModal(id, nick);
+});
+
+async function aprovarSolicitacao(uid, btn) {
+  if (btn) { btn.disabled = true; btn.textContent = 'Aprovando...'; }
+  try {
+    const snap = await db.collection('solicitacoes').doc(uid).get();
+    if (!snap.exists) return;
+    const { nick, telefone, criadoEm } = snap.data();
+
+    const memberRef = db.collection('integrantes').doc(uid);
+    const batch = db.batch();
+    batch.set(memberRef, {
+      nick,
+      situacao: 'Ativo',
+      criadoEm: criadoEm || firebase.firestore.FieldValue.serverTimestamp()
+    });
+    batch.set(memberRef.collection('privado').doc('telefone'), { numero: telefone || '' });
+    batch.delete(db.collection('solicitacoes').doc(uid));
+    await batch.commit();
+
+    await logHistorico('Cadastro aprovado', nick, 'Solicitação aprovada e movida para a lista oficial de integrantes.');
+  } catch (err) {
+    console.error(err);
+    if (btn) { btn.disabled = false; btn.textContent = 'Aprovar'; }
+  }
+}
+
+const solicitacaoRecusarModal = document.getElementById('solicitacaoRecusarModal');
+let recusarTargetId = null;
+
+function openRecusarModal(id, nick) {
+  recusarTargetId = id;
+  document.getElementById('recusarTargetNick').textContent = nick || '';
+  solicitacaoRecusarModal.classList.add('show');
+}
+
+document.getElementById('recusarCancelBtn').addEventListener('click', () => {
+  solicitacaoRecusarModal.classList.remove('show');
+  recusarTargetId = null;
+});
+
+document.getElementById('recusarConfirmBtn').addEventListener('click', async () => {
+  if (!recusarTargetId) return;
+  const btn = document.getElementById('recusarConfirmBtn');
+  const nick = document.getElementById('recusarTargetNick').textContent;
+  btn.disabled = true;
+  btn.textContent = 'Recusando...';
+  try {
+    await db.collection('solicitacoes').doc(recusarTargetId).delete();
+    await logHistorico('Cadastro recusado', nick, 'Solicitação recusada pelo líder.');
+    solicitacaoRecusarModal.classList.remove('show');
+  } catch (err) {
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Recusar';
+    recusarTargetId = null;
+  }
+});
+
+// ============================================================
+// Notificações sonoras (bolinha já é tratada acima via computeNotifBadge)
+// ============================================================
+
+let audioCtx = null;
+
+function unlockAudio() {
+  if (audioCtx) return;
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  } catch (e) { /* navegador sem suporte — ignora silenciosamente */ }
+}
+document.addEventListener('click', unlockAudio, { once: true });
+
+function playNotificationSound() {
+  if (localStorage.getItem('acaiPimenta_som') === 'off') return;
+  if (!audioCtx) return; // ainda não houve interação do usuário para liberar áudio
+  try {
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.setValueAtTime(1175, now + 0.09);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.18, now + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  } catch (e) {
+    console.error('Erro ao tocar som de notificação:', e);
+  }
+}
+
+// Configurações do líder: ativar/silenciar som e bolinha de notificação
+const toggleSomEl = document.getElementById('toggleSom');
+const toggleVisualEl = document.getElementById('toggleVisual');
+
+toggleSomEl.checked = localStorage.getItem('acaiPimenta_som') !== 'off';
+toggleVisualEl.checked = localStorage.getItem('acaiPimenta_visual') !== 'off';
+
+toggleSomEl.addEventListener('change', () => {
+  localStorage.setItem('acaiPimenta_som', toggleSomEl.checked ? 'on' : 'off');
+  if (toggleSomEl.checked) unlockAudio();
+});
+toggleVisualEl.addEventListener('change', () => {
+  localStorage.setItem('acaiPimenta_visual', toggleVisualEl.checked ? 'on' : 'off');
+  computeNotifBadge();
+});
+
 // ---------- Adicionar / Editar integrante ----------
 
 const memberModal = document.getElementById('memberModal');
+let editingOriginal = null;
 
 document.getElementById('addMemberBtn').addEventListener('click', () => openMemberModal(null));
 document.getElementById('memberFormCancel').addEventListener('click', () => closeMemberModal());
@@ -1281,12 +2143,14 @@ function openMemberModal(id) {
 
   if (id) {
     const member = adminMembers.find(m => m.id === id);
+    editingOriginal = member ? { ...member } : null;
     document.getElementById('memberModalTitle').textContent = 'Editar integrante';
     document.getElementById('memberFormNick').value = member ? member.nick : '';
     document.getElementById('memberFormIdJogador').value = member && member.idJogador ? member.idJogador : '';
     document.getElementById('memberFormSituacao').value = member ? member.situacao : 'Ativo';
     document.getElementById('memberFormTel').placeholder = 'Deixe em branco para manter o atual';
   } else {
+    editingOriginal = null;
     document.getElementById('memberModalTitle').textContent = 'Adicionar integrante';
     document.getElementById('memberFormSituacao').value = 'Ativo';
     document.getElementById('memberFormTel').placeholder = '(11) 91234-5678';
@@ -1331,6 +2195,20 @@ document.getElementById('memberForm').addEventListener('submit', async (e) => {
       await memberRef.collection('privado').doc('telefone').set({ numero: telefone });
     }
 
+    if (!id) {
+      await logHistorico('Integrante adicionado', nick, 'Integrante adicionado manualmente pelo líder.');
+    } else {
+      if (editingOriginal && editingOriginal.nick !== nick) {
+        await logHistorico('Nick alterado', nick, `De "${editingOriginal.nick}" para "${nick}".`);
+      }
+      if (editingOriginal && editingOriginal.situacao !== situacao) {
+        await logHistorico('Situação alterada', nick, `De "${editingOriginal.situacao || '—'}" para "${situacao}".`);
+      }
+      if (telefone) {
+        await logHistorico('Telefone alterado', nick, 'Telefone atualizado pelo líder.');
+      }
+    }
+
     closeMemberModal();
   } catch (err) {
     console.error(err);
@@ -1346,9 +2224,11 @@ document.getElementById('memberForm').addEventListener('submit', async (e) => {
 
 const deleteModal = document.getElementById('deleteModal');
 let deleteTargetId = null;
+let deleteTargetNickValue = '';
 
 function openDeleteModal(id, nick) {
   deleteTargetId = id;
+  deleteTargetNickValue = nick || '';
   document.getElementById('deleteTargetNick').textContent = nick || '';
   deleteModal.classList.add('show');
 }
@@ -1366,6 +2246,7 @@ document.getElementById('deleteConfirmBtn').addEventListener('click', async () =
   try {
     await db.collection('integrantes').doc(deleteTargetId).collection('privado').doc('telefone').delete().catch(() => {});
     await db.collection('integrantes').doc(deleteTargetId).delete();
+    await logHistorico('Integrante removido', deleteTargetNickValue, 'Integrante excluído pelo líder.');
     deleteModal.classList.remove('show');
   } catch (err) {
     console.error(err);
@@ -1516,7 +2397,7 @@ document.getElementById('warningsCloseBtn').addEventListener('click', () => {
 });
 
 // Fecha modais clicando fora do conteúdo
-[memberModal, deleteModal, phoneModal, warningsModal].forEach(modal => {
+[memberModal, deleteModal, phoneModal, warningsModal, avisoModal, document.getElementById('deleteAvisoModal'), solicitacaoRecusarModal].forEach(modal => {
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
       modal.classList.remove('show');
