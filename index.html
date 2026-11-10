@@ -91,16 +91,23 @@ a { color: inherit; }
 }
 
 .brand-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
   background: linear-gradient(145deg, var(--purple), var(--red));
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 17px;
   box-shadow: var(--shadow-glow);
   flex: none;
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .brand small {
@@ -405,11 +412,27 @@ main {
   flex: none;
 }
 
+.member-row .nick-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .member-row .nick {
   font-weight: 600;
   font-size: 15.5px;
   flex: 1;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.member-row .player-id {
+  font-size: 12px;
+  color: var(--text-dim);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -428,6 +451,7 @@ main {
 .badge-saiu-grupo { background: rgba(239, 59, 86, 0.14); color: #ff8095; }
 .badge-saiu-guilda { background: rgba(239, 59, 86, 0.2); color: #ff5570; }
 .badge-pendente { background: rgba(139, 92, 246, 0.16); color: #c4b1fb; }
+.badge-warning { background: rgba(251, 191, 36, 0.18); color: #fcd34d; font-weight: 700; }
 
 .member-row .actions {
   display: flex;
@@ -485,6 +509,53 @@ main {
   margin-top: 20px;
 }
 
+.modal-wide { max-width: 560px; }
+
+.warnings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 260px;
+  overflow-y: auto;
+  margin-bottom: 18px;
+}
+
+.warning-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+
+.warning-row .warning-info { min-width: 0; }
+.warning-row .warning-tipo { font-weight: 600; font-size: 15px; }
+.warning-row .warning-data { font-size: 12.5px; color: var(--text-faint); margin-top: 3px; }
+
+.warning-row .warning-remove {
+  flex: none;
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 8px;
+}
+.warning-row .warning-remove:hover { color: var(--red); }
+
+.warnings-empty {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 14.5px;
+  padding: 18px 10px;
+}
+
+.warning-form { border-top: 1px solid var(--border); padding-top: 18px; }
+
 .phone-reveal {
   font-family: 'Rajdhani', monospace;
   font-size: 15px;
@@ -520,73 +591,74 @@ footer {
    Ajuste de tamanho — fontes e botões maiores
    ============================================================ */
 
-.brand { font-size: 23px; }
-.brand small { font-size: 12px; }
+.brand { font-size: 26px; }
+.brand small { font-size: 13.5px; }
 
 nav.main-nav button {
-  font-size: 17px;
-  padding: 10px 20px;
+  font-size: 19px;
+  padding: 12px 22px;
 }
 
-.leader-pill { font-size: 14.5px; }
+.leader-pill { font-size: 16px; }
 .leader-pill button {
-  font-size: 15px;
-  padding: 9px 16px;
+  font-size: 16.5px;
+  padding: 10px 18px;
 }
 
-.hero h1 { font-size: 58px; }
-.hero p { font-size: 18px; max-width: 480px; }
-.hero .tag { font-size: 13px; padding: 6px 14px; }
+.hero h1 { font-size: 66px; }
+.hero p { font-size: 20px; max-width: 520px; }
+.hero .tag { font-size: 14.5px; padding: 7px 16px; }
 
 .btn {
-  font-size: 16.5px;
-  padding: 14px 26px;
-  border-radius: 12px;
+  font-size: 19px;
+  padding: 16px 30px;
+  border-radius: 13px;
 }
 .btn-sm {
-  font-size: 14.5px;
-  padding: 9px 15px;
+  font-size: 16px;
+  padding: 10px 18px;
   border-radius: 10px;
 }
 
-.card { max-width: 460px; padding: 30px; }
-.card h2 { font-size: 25px; }
-.card .sub { font-size: 15px; }
+.card { max-width: 500px; padding: 34px; }
+.card h2 { font-size: 28px; }
+.card .sub { font-size: 16.5px; }
 
-.field label { font-size: 14px; }
+.field label { font-size: 15.5px; }
 .field input, .field select {
-  font-size: 16.5px;
-  padding: 13px 15px;
+  font-size: 19px;
+  padding: 15px 17px;
 }
-.field .hint { font-size: 13px; }
-.form-msg { font-size: 15px; }
+.field .hint { font-size: 14.5px; }
+.form-msg { font-size: 16.5px; }
 
-.section-head h2 { font-size: 27px; }
-.section-head .count { font-size: 14.5px; padding: 6px 14px; }
+.section-head h2 { font-size: 30px; }
+.section-head .count { font-size: 16px; padding: 7px 16px; }
 
 .search-row input {
-  font-size: 16.5px;
-  padding: 13px 16px;
+  font-size: 19px;
+  padding: 15px 18px;
 }
 
-.stat-value { font-size: 30px; }
-.stat-label { font-size: 12.5px; }
-.stat-card { padding: 20px 16px; }
+.stat-value { font-size: 34px; }
+.stat-label { font-size: 14px; }
+.stat-card { padding: 22px 18px; }
 
-.member-row { padding: 15px 18px; gap: 16px; }
-.member-row .idx { font-size: 13.5px; width: 30px; }
-.member-row .nick { font-size: 17.5px; }
+.member-row { padding: 17px 20px; gap: 18px; }
+.member-row .idx { font-size: 15px; width: 32px; }
+.member-row .nick { font-size: 19.5px; }
+.member-row .player-id { font-size: 13.5px; }
 
-.badge { font-size: 13px; padding: 5px 12px; }
+.badge { font-size: 14.5px; padding: 6px 13px; }
 
-.empty-state, .loading-state { font-size: 16px; padding: 56px 20px; }
+.empty-state, .loading-state { font-size: 17.5px; padding: 60px 20px; }
 
-.modal { padding: 28px; max-width: 460px; }
-.modal h3 { font-size: 21px; }
-.modal .sub { font-size: 14.5px; }
-.phone-reveal { font-size: 17px; padding: 12px 14px; }
+.modal { padding: 32px; max-width: 500px; }
+.modal h3 { font-size: 23px; }
+.modal .sub { font-size: 16px; }
+.phone-reveal { font-size: 19px; padding: 13px 16px; }
 
-footer { font-size: 13.5px; }
+footer { font-size: 15px; }
 
 </style>
 </head>
@@ -594,7 +666,7 @@ footer { font-size: 13.5px; }
 
 <header class="app-header">
   <div class="brand">
-    <div class="brand-mark">🍇</div>
+    <div class="brand-mark"><img src="https://i.ibb.co/Nd95Q9Xh/file-0000000020a4820ea096a7419459bfba.png" alt="AÇAÍ PIMENTA"></div>
     <div>
       AÇAÍ PIMENTA
       <small>Controle oficial de integrantes</small>
@@ -743,6 +815,11 @@ footer { font-size: 13.5px; }
         <input id="memberFormTel" type="tel" placeholder="Deixe em branco para manter o atual">
       </div>
       <div class="field">
+        <label for="memberFormIdJogador">ID do jogador (opcional)</label>
+        <input id="memberFormIdJogador" type="text" maxlength="20" placeholder="Ex: 123456789">
+        <div class="hint">Preencha só se achar necessário.</div>
+      </div>
+      <div class="field">
         <label for="memberFormSituacao">Situação</label>
         <select id="memberFormSituacao">
           <option value="Ativo">Ativo</option>
@@ -782,6 +859,36 @@ footer { font-size: 13.5px; }
     <div class="modal-actions">
       <button type="button" class="btn btn-ghost" id="phoneCloseBtn">Fechar</button>
     </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: Advertências ===================== -->
+<div class="modal-backdrop" id="warningsModal">
+  <div class="modal modal-wide">
+    <h3>Advertências</h3>
+    <p class="sub" id="warningsTargetNick"></p>
+
+    <div id="warningsList" class="warnings-list"></div>
+
+    <form id="warningForm" class="warning-form">
+      <div class="field">
+        <label for="warningTipo">Nova advertência</label>
+        <select id="warningTipo">
+          <option value="Não bateu a meta de honra da guilda">Não bateu a meta de honra da guilda</option>
+          <option value="Não jogou a guerra de guilda">Não jogou a guerra de guilda</option>
+          <option value="Outros">Outros</option>
+        </select>
+      </div>
+      <div class="field" id="warningOutrosField" style="display:none;">
+        <label for="warningOutrosTexto">Descreva o motivo</label>
+        <input id="warningOutrosTexto" type="text" maxlength="120" placeholder="Digite o motivo da advertência">
+      </div>
+      <div class="form-msg" id="warningFormMsg"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="warningsCloseBtn">Fechar</button>
+        <button type="submit" class="btn btn-primary" id="warningAddBtn">Adicionar advertência</button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -1133,9 +1240,14 @@ function renderAdminList() {
   listEl.innerHTML = filtered.map((m, i) => `
     <div class="member-row">
       <span class="idx">${i + 1}</span>
-      <span class="nick">${escapeHtml(m.nick || '—')}</span>
+      <div class="nick-wrap">
+        <span class="nick">${escapeHtml(m.nick || '—')}</span>
+        ${m.idJogador ? `<span class="player-id">ID: ${escapeHtml(m.idJogador)}</span>` : ''}
+      </div>
+      ${m.totalAdvertencias ? `<span class="badge badge-warning">⚠ ${m.totalAdvertencias}</span>` : ''}
       <span class="badge ${badgeClassFor(m.situacao)}">${escapeHtml(m.situacao || 'Pendente de verificação')}</span>
       <div class="actions">
+        <button class="btn btn-ghost btn-sm" data-action="warnings" data-id="${m.id}" data-nick="${escapeHtml(m.nick || '')}">Advertências</button>
         <button class="btn btn-ghost btn-sm" data-action="phone" data-id="${m.id}" data-nick="${escapeHtml(m.nick || '')}">Telefone</button>
         <button class="btn btn-ghost btn-sm" data-action="edit" data-id="${m.id}">Editar</button>
         <button class="btn btn-danger btn-sm" data-action="delete" data-id="${m.id}" data-nick="${escapeHtml(m.nick || '')}">Remover</button>
@@ -1151,6 +1263,7 @@ document.getElementById('adminList').addEventListener('click', (e) => {
   if (action === 'edit') openMemberModal(id);
   if (action === 'delete') openDeleteModal(id, nick);
   if (action === 'phone') openPhoneModal(id, nick);
+  if (action === 'warnings') openWarningsModal(id, nick);
 });
 
 // ---------- Adicionar / Editar integrante ----------
@@ -1170,6 +1283,7 @@ function openMemberModal(id) {
     const member = adminMembers.find(m => m.id === id);
     document.getElementById('memberModalTitle').textContent = 'Editar integrante';
     document.getElementById('memberFormNick').value = member ? member.nick : '';
+    document.getElementById('memberFormIdJogador').value = member && member.idJogador ? member.idJogador : '';
     document.getElementById('memberFormSituacao').value = member ? member.situacao : 'Ativo';
     document.getElementById('memberFormTel').placeholder = 'Deixe em branco para manter o atual';
   } else {
@@ -1189,6 +1303,7 @@ document.getElementById('memberForm').addEventListener('submit', async (e) => {
   const id = document.getElementById('memberFormId').value;
   const nick = document.getElementById('memberFormNick').value.trim();
   const telefone = document.getElementById('memberFormTel').value.trim();
+  const idJogador = document.getElementById('memberFormIdJogador').value.trim();
   const situacao = document.getElementById('memberFormSituacao').value;
   const msgEl = document.getElementById('memberFormMsg');
   const saveBtn = document.getElementById('memberFormSave');
@@ -1201,7 +1316,11 @@ document.getElementById('memberForm').addEventListener('submit', async (e) => {
     const docId = id || db.collection('integrantes').doc().id;
     const memberRef = db.collection('integrantes').doc(docId);
 
-    await memberRef.set({ nick, situacao }, { merge: true });
+    await memberRef.set({
+      nick,
+      situacao,
+      idJogador: idJogador || firebase.firestore.FieldValue.delete()
+    }, { merge: true });
     if (!id) {
       await memberRef.set({
         criadoEm: firebase.firestore.FieldValue.serverTimestamp()
@@ -1279,10 +1398,133 @@ document.getElementById('phoneCloseBtn').addEventListener('click', () => {
   phoneModal.classList.remove('show');
 });
 
+// ---------- Advertências ----------
+
+const warningsModal = document.getElementById('warningsModal');
+let warningsTargetId = null;
+let warningsUnsubscribe = null;
+
+document.getElementById('warningTipo').addEventListener('change', (e) => {
+  document.getElementById('warningOutrosField').style.display =
+    e.target.value === 'Outros' ? 'block' : 'none';
+});
+
+function openWarningsModal(id, nick) {
+  warningsTargetId = id;
+  document.getElementById('warningsTargetNick').textContent = nick || '';
+  document.getElementById('warningForm').reset();
+  document.getElementById('warningOutrosField').style.display = 'none';
+  document.getElementById('warningFormMsg').className = 'form-msg';
+  document.getElementById('warningsList').innerHTML = '<div class="warnings-empty">Carregando...</div>';
+  warningsModal.classList.add('show');
+
+  if (warningsUnsubscribe) warningsUnsubscribe();
+  warningsUnsubscribe = db.collection('integrantes').doc(id).collection('advertencias')
+    .orderBy('criadoEm', 'desc')
+    .onSnapshot((snapshot) => {
+      renderWarningsList(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
+    }, (err) => {
+      console.error(err);
+      document.getElementById('warningsList').innerHTML = '<div class="warnings-empty">Não foi possível carregar as advertências.</div>';
+    });
+}
+
+function renderWarningsList(warnings) {
+  const listEl = document.getElementById('warningsList');
+  if (warnings.length === 0) {
+    listEl.innerHTML = '<div class="warnings-empty">Nenhuma advertência registrada.</div>';
+    return;
+  }
+  listEl.innerHTML = warnings.map(w => {
+    const data = w.criadoEm && w.criadoEm.toDate ? w.criadoEm.toDate().toLocaleDateString('pt-BR') : '';
+    return `
+      <div class="warning-row">
+        <div class="warning-info">
+          <div class="warning-tipo">${escapeHtml(w.tipo || 'Outros')}</div>
+          ${w.descricao ? `<div class="warning-data">${escapeHtml(w.descricao)}</div>` : ''}
+          ${data ? `<div class="warning-data">${data}</div>` : ''}
+        </div>
+        <button type="button" class="warning-remove" data-id="${w.id}">Remover</button>
+      </div>
+    `;
+  }).join('');
+}
+
+document.getElementById('warningsList').addEventListener('click', async (e) => {
+  const btn = e.target.closest('button[data-id]');
+  if (!btn || !warningsTargetId) return;
+  btn.disabled = true;
+  try {
+    const memberRef = db.collection('integrantes').doc(warningsTargetId);
+    const batch = db.batch();
+    batch.delete(memberRef.collection('advertencias').doc(btn.dataset.id));
+    batch.update(memberRef, { totalAdvertencias: firebase.firestore.FieldValue.increment(-1) });
+    await batch.commit();
+  } catch (err) {
+    console.error(err);
+    btn.disabled = false;
+  }
+});
+
+document.getElementById('warningForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!warningsTargetId) return;
+
+  const tipo = document.getElementById('warningTipo').value;
+  const descricao = document.getElementById('warningOutrosTexto').value.trim();
+  const msgEl = document.getElementById('warningFormMsg');
+  const addBtn = document.getElementById('warningAddBtn');
+  msgEl.className = 'form-msg';
+
+  if (tipo === 'Outros' && !descricao) {
+    msgEl.textContent = 'Descreva o motivo da advertência.';
+    msgEl.className = 'form-msg err show';
+    return;
+  }
+
+  addBtn.disabled = true;
+  addBtn.textContent = 'Adicionando...';
+
+  try {
+    const memberRef = db.collection('integrantes').doc(warningsTargetId);
+    const newWarningRef = memberRef.collection('advertencias').doc();
+    const batch = db.batch();
+    batch.set(newWarningRef, {
+      tipo,
+      descricao: tipo === 'Outros' ? descricao : '',
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    batch.update(memberRef, { totalAdvertencias: firebase.firestore.FieldValue.increment(1) });
+    await batch.commit();
+
+    document.getElementById('warningForm').reset();
+    document.getElementById('warningOutrosField').style.display = 'none';
+  } catch (err) {
+    console.error(err);
+    msgEl.textContent = 'Não foi possível adicionar a advertência.';
+    msgEl.className = 'form-msg err show';
+  } finally {
+    addBtn.disabled = false;
+    addBtn.textContent = 'Adicionar advertência';
+  }
+});
+
+document.getElementById('warningsCloseBtn').addEventListener('click', () => {
+  warningsModal.classList.remove('show');
+  if (warningsUnsubscribe) { warningsUnsubscribe(); warningsUnsubscribe = null; }
+  warningsTargetId = null;
+});
+
 // Fecha modais clicando fora do conteúdo
-[memberModal, deleteModal, phoneModal].forEach(modal => {
+[memberModal, deleteModal, phoneModal, warningsModal].forEach(modal => {
   modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.classList.remove('show');
+    if (e.target === modal) {
+      modal.classList.remove('show');
+      if (modal === warningsModal) {
+        if (warningsUnsubscribe) { warningsUnsubscribe(); warningsUnsubscribe = null; }
+        warningsTargetId = null;
+      }
+    }
   });
 });
 
