@@ -391,6 +391,66 @@ main {
   .stat-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* ---------- liderança (pública) ---------- */
+
+.lideranca-card {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(239, 59, 86, 0.1));
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+}
+
+.lideranca-label {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.lideranca-nomes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lideranca-nomes span {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ---------- edição da liderança (painel do líder) ---------- */
+
+.lideranca-edit {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  margin-bottom: 24px;
+}
+.lideranca-edit h3 {
+  margin: 0 0 14px;
+  font-size: 16px;
+}
+.lideranca-edit .lideranca-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+@media (max-width: 720px) {
+  .lideranca-edit .lideranca-fields { grid-template-columns: 1fr; }
+}
+
 /* ---------- member list ---------- */
 
 .member-list { display: flex; flex-direction: column; gap: 8px; }
@@ -625,6 +685,7 @@ nav.sub-nav button.active {
 
 .leader-settings {
   display: flex;
+  align-items: center;
   gap: 16px;
   font-size: 13px;
   color: var(--text-dim);
@@ -634,6 +695,17 @@ nav.sub-nav button.active {
   align-items: center;
   gap: 6px;
   cursor: pointer;
+}
+
+.leader-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--purple);
+  background: rgba(139, 92, 246, 0.14);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  padding: 4px 11px;
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
 .subview { display: none; }
@@ -850,6 +922,11 @@ footer { font-size: 15px; }
 nav.sub-nav button { font-size: 16.5px; padding: 10px 18px; }
 .notif-badge { font-size: 12.5px; min-width: 20px; height: 20px; }
 .leader-settings { font-size: 14.5px; gap: 20px; }
+.leader-badge { font-size: 13.5px; padding: 5px 13px; }
+
+.lideranca-label { font-size: 16px; }
+.lideranca-nomes span { font-size: 15px; padding: 6px 14px; }
+.lideranca-edit h3 { font-size: 18px; }
 
 .aviso-card { padding: 20px 22px; }
 .aviso-card .aviso-titulo { font-size: 19px; }
@@ -926,6 +1003,12 @@ nav.sub-nav button { font-size: 16.5px; padding: 10px 18px; }
 
   <!-- ===================== LISTA DE INTEGRANTES ===================== -->
   <section id="view-integrantes" class="view">
+
+    <div class="lideranca-card" id="liderancaCard" style="display:none;">
+      <span class="lideranca-label">👑 Liderança da guilda</span>
+      <div class="lideranca-nomes" id="liderancaNomes"></div>
+    </div>
+
     <div class="section-head">
       <h2>Integrantes</h2>
       <span class="count" id="integrantesCount">0 integrantes</span>
@@ -1001,6 +1084,7 @@ nav.sub-nav button { font-size: 16.5px; padding: 10px 18px; }
         </nav>
 
         <div class="leader-settings">
+          <span class="leader-badge" id="leaderNumberBadge"></span>
           <label><input type="checkbox" id="toggleSom" checked> Som</label>
           <label><input type="checkbox" id="toggleVisual" checked> Bolinha</label>
         </div>
@@ -1008,6 +1092,29 @@ nav.sub-nav button { font-size: 16.5px; padding: 10px 18px; }
 
       <!-- ---------- SUBVIEW: Integrantes ---------- -->
       <div class="subview active" id="subview-integrantes">
+
+        <div class="lideranca-edit">
+          <h3>👑 Nomes exibidos como liderança (visível para todos)</h3>
+          <form id="liderancaForm">
+            <div class="lideranca-fields">
+              <div class="field">
+                <label for="liderancaInput1">Líder 1</label>
+                <input id="liderancaInput1" type="text" maxlength="30" placeholder="Nick ou nome">
+              </div>
+              <div class="field">
+                <label for="liderancaInput2">Líder 2</label>
+                <input id="liderancaInput2" type="text" maxlength="30" placeholder="Nick ou nome">
+              </div>
+              <div class="field">
+                <label for="liderancaInput3">Líder 3</label>
+                <input id="liderancaInput3" type="text" maxlength="30" placeholder="Nick ou nome">
+              </div>
+            </div>
+            <div class="form-msg" id="liderancaFormMsg"></div>
+            <button type="submit" class="btn btn-primary btn-sm" id="liderancaSaveBtn">Salvar nomes</button>
+          </form>
+        </div>
+
         <div class="stat-grid">
           <div class="stat-card c-total"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total</div></div>
           <div class="stat-card c-ativo"><div class="stat-value" id="statAtivo">0</div><div class="stat-label">Ativos</div></div>
@@ -1314,6 +1421,7 @@ const escapeHtml = (str) =>
 
 let currentUser = null;       // usuário autenticado (anônimo ou líder)
 let isLeader = false;         // true quando o usuário logado é o líder
+let currentLeaderNumber = null; // 1, 2 ou 3 — qual líder está logado (posição em LEADER_UIDS)
 let myMemberDocId = null;     // uid do visitante (usado para saber se já se cadastrou)
 
 // ============================================================
@@ -1349,6 +1457,7 @@ auth.onAuthStateChanged((user) => {
   if (!user) {
     currentUser = null;
     isLeader = false;
+    currentLeaderNumber = null;
     myMemberDocId = null;
     updateLeaderPill();
     document.getElementById('painelLoginWrap').style.display = 'block';
@@ -1363,6 +1472,7 @@ auth.onAuthStateChanged((user) => {
 
   currentUser = user;
   isLeader = LEADER_UIDS.includes(user.uid);
+  currentLeaderNumber = isLeader ? LEADER_UIDS.indexOf(user.uid) + 1 : null;
   myMemberDocId = user.uid;
 
   updateLeaderPill();
@@ -1372,6 +1482,8 @@ auth.onAuthStateChanged((user) => {
     document.getElementById('painelLoginWrap').style.display = 'none';
     document.getElementById('painelAdminWrap').style.display = 'block';
     document.getElementById('addAvisoBtn').style.display = 'inline-flex';
+    document.getElementById('leaderNumberBadge').textContent =
+      currentLeaderNumber ? `Logado como Líder ${currentLeaderNumber}` : 'Logado como líder';
     startAdminListener();
     startLeaderNotifications();
     startHistoricoListener();
@@ -1390,7 +1502,7 @@ function updateLeaderPill() {
   const statusEl = document.getElementById('leaderStatus');
   const actionBtn = document.getElementById('leaderActionBtn');
   if (isLeader) {
-    statusEl.textContent = 'Líder conectado';
+    statusEl.textContent = currentLeaderNumber ? `Líder ${currentLeaderNumber} conectado` : 'Líder conectado';
     actionBtn.textContent = 'Sair';
   } else {
     statusEl.textContent = 'Visitante';
@@ -1756,6 +1868,59 @@ document.getElementById('deleteAvisoConfirmBtn').addEventListener('click', async
     btn.disabled = false;
     btn.textContent = 'Remover';
     deleteAvisoTargetId = null;
+  }
+});
+
+// ============================================================
+// LIDERANÇA DA GUILDA (nomes públicos, editáveis só pelo líder)
+// ============================================================
+
+db.collection('config').doc('lideranca').onSnapshot((snap) => {
+  const data = snap.exists ? snap.data() : {};
+  const nomes = [data.nome1, data.nome2, data.nome3].filter(n => n && n.trim());
+
+  const cardEl = document.getElementById('liderancaCard');
+  const nomesEl = document.getElementById('liderancaNomes');
+  if (nomes.length === 0) {
+    cardEl.style.display = 'none';
+  } else {
+    cardEl.style.display = 'flex';
+    nomesEl.innerHTML = nomes.map(n => `<span>${escapeHtml(n)}</span>`).join('');
+  }
+
+  // Se o líder estiver logado, mantém os campos de edição em sincronia
+  // (sem sobrescrever o que ele está digitando no momento).
+  if (isLeader && document.activeElement && document.activeElement.closest('#liderancaForm') == null) {
+    document.getElementById('liderancaInput1').value = data.nome1 || '';
+    document.getElementById('liderancaInput2').value = data.nome2 || '';
+    document.getElementById('liderancaInput3').value = data.nome3 || '';
+  }
+}, (err) => {
+  console.error('Erro ao carregar liderança:', err);
+});
+
+document.getElementById('liderancaForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const nome1 = document.getElementById('liderancaInput1').value.trim();
+  const nome2 = document.getElementById('liderancaInput2').value.trim();
+  const nome3 = document.getElementById('liderancaInput3').value.trim();
+  const msgEl = document.getElementById('liderancaFormMsg');
+  const saveBtn = document.getElementById('liderancaSaveBtn');
+  msgEl.className = 'form-msg';
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Salvando...';
+
+  try {
+    await db.collection('config').doc('lideranca').set({ nome1, nome2, nome3 }, { merge: true });
+    msgEl.textContent = 'Nomes atualizados!';
+    msgEl.className = 'form-msg ok show';
+  } catch (err) {
+    console.error(err);
+    msgEl.textContent = 'Não foi possível salvar os nomes.';
+    msgEl.className = 'form-msg err show';
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Salvar nomes';
   }
 });
 
