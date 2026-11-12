@@ -67,6 +67,14 @@ a { color: inherit; }
 
 /* ---------- layout shell ---------- */
 
+.top-banner {
+  display: flex;
+  justify-content: center;
+  padding: 14px 20px 10px;
+  background: rgba(14, 10, 22, 0.6);
+  border-bottom: 1px solid var(--border);
+}
+
 .app-header {
   position: sticky;
   top: 0;
@@ -75,7 +83,7 @@ a { color: inherit; }
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 14px 22px;
+  padding: 12px 22px;
   background: rgba(14, 10, 22, 0.86);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
@@ -791,6 +799,42 @@ nav.sub-nav button.active {
   cursor: pointer;
 }
 
+/* ---------- guerra de guilda ---------- */
+
+.guerra-ciclo-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 24px;
+}
+.guerra-ciclo-label { font-size: 12px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.2px; }
+.guerra-ciclo-datas { font-size: 16px; font-weight: 700; margin-top: 3px; }
+
+.rank-position {
+  font-weight: 700;
+  color: var(--text-dim);
+  width: 30px;
+  text-align: center;
+  flex: none;
+}
+.rank-position.top1 { color: #fcd34d; }
+.rank-position.top2 { color: #d8dee9; }
+.rank-position.top3 { color: #d97757; }
+
+.pontos-valor {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+  white-space: nowrap;
+  flex: none;
+}
+
 /* ---------- histórico administrativo ---------- */
 
 .historico-filters {
@@ -838,9 +882,10 @@ footer {
 /* ---------- responsive ---------- */
 
 @media (max-width: 640px) {
-  .app-header { flex-wrap: wrap; }
+  .app-header { flex-wrap: wrap; justify-content: flex-end; }
   nav.main-nav { order: 3; width: 100%; justify-content: space-between; }
   nav.main-nav button { flex: 1; text-align: center; padding: 9px 8px; font-size: 14px; }
+  .top-banner { padding: 12px 16px 8px; }
   .hero h1 { font-size: 36px; }
   .member-row { flex-wrap: wrap; }
   .member-row .actions { width: 100%; justify-content: flex-start; margin-top: 4px; }
@@ -942,11 +987,16 @@ nav.sub-nav button { font-size: 16.5px; padding: 10px 18px; }
 .historico-row { font-size: 15px; padding: 13px 16px; }
 .historico-row .h-meta { font-size: 13px; }
 
+.guerra-ciclo-label { font-size: 13.5px; }
+.guerra-ciclo-datas { font-size: 18px; }
+.rank-position { font-size: 16px; width: 34px; }
+.pontos-valor { font-size: 17px; }
+
 </style>
 </head>
 <body>
 
-<header class="app-header">
+<div class="top-banner">
   <div class="brand">
     <div class="brand-mark"><img src="https://i.ibb.co/Nd95Q9Xh/file-0000000020a4820ea096a7419459bfba.png" alt="AÇAÍ PIMENTA"></div>
     <div>
@@ -954,7 +1004,9 @@ nav.sub-nav button { font-size: 16.5px; padding: 10px 18px; }
       <small>Controle oficial de integrantes</small>
     </div>
   </div>
+</div>
 
+<header class="app-header">
   <nav class="main-nav">
     <button data-view="home" class="active">Início</button>
     <button data-view="integrantes">Integrantes</button>
@@ -1081,6 +1133,7 @@ nav.sub-nav button { font-size: 16.5px; padding: 10px 18px; }
             <span class="notif-badge" id="solicitacoesBadge" style="display:none;">0</span>
           </button>
           <button data-subview="historico">Histórico</button>
+          <button data-subview="guerra">Guerra de Guilda</button>
         </nav>
 
         <div class="leader-settings">
@@ -1129,7 +1182,7 @@ nav.sub-nav button { font-size: 16.5px; padding: 10px 18px; }
         </div>
 
         <div class="search-row">
-          <input type="text" id="adminSearchInput" placeholder="Pesquisar por nick...">
+          <input type="text" id="adminSearchInput" placeholder="Pesquisar por nick, ID ou telefone...">
         </div>
 
         <div id="adminListWrap">
@@ -1182,6 +1235,7 @@ nav.sub-nav button { font-size: 16.5px; padding: 10px 18px; }
             <option value="Aviso publicado">Aviso publicado</option>
             <option value="Aviso editado">Aviso editado</option>
             <option value="Aviso excluído">Aviso excluído</option>
+            <option value="Ciclo de guerra encerrado">Ciclo de guerra encerrado</option>
           </select>
           <input type="date" id="historicoFiltroData">
           <input type="text" id="historicoFiltroNick" placeholder="Filtrar por nick...">
@@ -1195,6 +1249,40 @@ nav.sub-nav button { font-size: 16.5px; padding: 10px 18px; }
           <div class="historico-list" id="historicoList" style="display:none;"></div>
           <div class="empty-state" id="historicoEmpty" style="display:none;">
             Nenhum registro encontrado.
+          </div>
+        </div>
+      </div>
+
+      <!-- ---------- SUBVIEW: Guerra de Guilda ---------- -->
+      <div class="subview" id="subview-guerra">
+
+        <div class="guerra-ciclo-info">
+          <div>
+            <div class="guerra-ciclo-label">Ciclo atual (4 semanas)</div>
+            <div class="guerra-ciclo-datas" id="guerraCicloDatas">Carregando...</div>
+          </div>
+          <button class="btn btn-danger btn-sm" id="fecharCicloBtn">Fechar ciclo e arquivar ranking</button>
+        </div>
+
+        <div class="section-head">
+          <h2>Ranking do ciclo atual</h2>
+        </div>
+
+        <div id="guerraRankingWrap">
+          <div class="member-list" id="guerraRankingList" style="display:none;"></div>
+          <div class="empty-state" id="guerraRankingEmpty">
+            Nenhum integrante ativo ainda.
+          </div>
+        </div>
+
+        <div class="section-head" style="margin-top: 30px;">
+          <h2>Ciclos encerrados</h2>
+        </div>
+
+        <div id="guerraHistoricoWrap">
+          <div class="historico-list" id="guerraHistoricoList" style="display:none;"></div>
+          <div class="empty-state" id="guerraHistoricoEmpty">
+            Nenhum ciclo encerrado ainda.
           </div>
         </div>
       </div>
@@ -1350,6 +1438,56 @@ nav.sub-nav button { font-size: 16.5px; padding: 10px 18px; }
   </div>
 </div>
 
+<!-- ===================== MODAL: Pontos da Guerra de Guilda ===================== -->
+<div class="modal-backdrop" id="pontosModal">
+  <div class="modal modal-wide">
+    <h3>Pontos da Guerra de Guilda</h3>
+    <p class="sub" id="pontosTargetNick"></p>
+
+    <div id="pontosList" class="warnings-list"></div>
+
+    <form id="pontosForm" class="warning-form">
+      <div class="field">
+        <label for="pontosValor">Pontos feitos nesta guerra</label>
+        <input id="pontosValor" type="number" min="1" step="1" placeholder="Ex: 160" required>
+      </div>
+      <div class="field">
+        <label for="pontosData">Data da guerra</label>
+        <input id="pontosData" type="date">
+      </div>
+      <div class="form-msg" id="pontosFormMsg"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="pontosCloseBtn">Fechar</button>
+        <button type="submit" class="btn btn-primary" id="pontosAddBtn">Adicionar pontos</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== MODAL: Confirmar fechamento de ciclo ===================== -->
+<div class="modal-backdrop" id="fecharCicloModal">
+  <div class="modal">
+    <h3>Fechar o ciclo atual?</h3>
+    <p class="sub">O ranking de hoje será arquivado em "Ciclos encerrados" e os pontos de todos voltam a zero para o próximo ciclo. Essa ação não pode ser desfeita.</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="fecharCicloCancelBtn">Cancelar</button>
+      <button type="button" class="btn btn-danger" id="fecharCicloConfirmBtn">Fechar ciclo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: Ranking de um ciclo encerrado ===================== -->
+<div class="modal-backdrop" id="cicloRankingModal">
+  <div class="modal modal-wide">
+    <h3>Ranking do ciclo</h3>
+    <p class="sub" id="cicloRankingPeriodo"></p>
+    <div id="cicloRankingList" class="warnings-list"></div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="cicloRankingCloseBtn">Fechar</button>
+    </div>
+  </div>
+</div>
+
 <!-- Firebase SDK (compat, compatível com JavaScript puro / sem build) -->
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
@@ -1466,6 +1604,8 @@ auth.onAuthStateChanged((user) => {
     stopAdminListener();
     stopLeaderNotifications();
     stopHistoricoListener();
+    stopGuerraCicloListener();
+    stopGuerraHistoricoListener();
     renderAvisosList();
     return;
   }
@@ -1487,6 +1627,8 @@ auth.onAuthStateChanged((user) => {
     startAdminListener();
     startLeaderNotifications();
     startHistoricoListener();
+    startGuerraCicloListener();
+    startGuerraHistoricoListener();
   } else {
     document.getElementById('painelLoginWrap').style.display = 'block';
     document.getElementById('painelAdminWrap').style.display = 'none';
@@ -1494,6 +1636,8 @@ auth.onAuthStateChanged((user) => {
     stopAdminListener();
     stopLeaderNotifications();
     stopHistoricoListener();
+    stopGuerraCicloListener();
+    stopGuerraHistoricoListener();
   }
   renderAvisosList();
 });
@@ -1930,6 +2074,7 @@ document.getElementById('liderancaForm').addEventListener('submit', async (e) =>
 
 let adminMembers = [];
 let adminUnsubscribe = null;
+let adminPhonesCache = {}; // memberId -> telefone (cache local, só para a busca do líder)
 
 function startAdminListener() {
   if (adminUnsubscribe) return;
@@ -1939,9 +2084,28 @@ function startAdminListener() {
       .sort((a, b) => (a.nick || '').localeCompare(b.nick || '', 'pt-BR', { sensitivity: 'base' }));
     renderAdminList();
     renderStats();
+    renderGuerraRanking();
+    refreshAdminPhonesCache();
   }, (err) => {
     console.error('Erro ao carregar painel:', err);
   });
+}
+
+// Busca (uma vez por integrante novo) o telefone privado de cada um para
+// permitir pesquisar por telefone no painel do líder, sem expor isso na
+// lista pública nem na tela — é usado só internamente para filtrar.
+async function refreshAdminPhonesCache() {
+  const idsToFetch = adminMembers.map(m => m.id).filter(id => !(id in adminPhonesCache));
+  if (idsToFetch.length === 0) return;
+  await Promise.all(idsToFetch.map(async (id) => {
+    try {
+      const snap = await db.collection('integrantes').doc(id).collection('privado').doc('telefone').get();
+      adminPhonesCache[id] = snap.exists ? (snap.data().numero || '') : '';
+    } catch (err) {
+      adminPhonesCache[id] = '';
+    }
+  }));
+  renderAdminList();
 }
 
 function stopAdminListener() {
@@ -1965,7 +2129,16 @@ function renderStats() {
 
 function renderAdminList() {
   const term = document.getElementById('adminSearchInput').value.trim().toLowerCase();
-  const filtered = adminMembers.filter(m => (m.nick || '').toLowerCase().includes(term));
+  const termDigits = term.replace(/\D/g, '');
+  const filtered = adminMembers.filter(m => {
+    if (!term) return true;
+    const nickMatch = (m.nick || '').toLowerCase().includes(term);
+    const idMatch = (m.idJogador || '').toLowerCase().includes(term);
+    const telefone = adminPhonesCache[m.id] || '';
+    const phoneMatch = telefone.toLowerCase().includes(term)
+      || (termDigits && telefone.replace(/\D/g, '').includes(termDigits));
+    return nickMatch || idMatch || phoneMatch;
+  });
 
   document.getElementById('adminLoading').style.display = 'none';
   const listEl = document.getElementById('adminList');
@@ -2110,6 +2283,334 @@ function renderHistoricoList() {
 document.getElementById('historicoFiltroTipo').addEventListener('change', renderHistoricoList);
 document.getElementById('historicoFiltroData').addEventListener('change', renderHistoricoList);
 document.getElementById('historicoFiltroNick').addEventListener('input', renderHistoricoList);
+
+// ============================================================
+// Guerra de Guilda — ciclo de 4 semanas, pontos e ranking
+// ============================================================
+
+const DIAS_CICLO = 28;
+
+let guerraCicloInicio = null;
+let guerraCicloUnsubscribe = null;
+
+function startGuerraCicloListener() {
+  if (guerraCicloUnsubscribe) return;
+  guerraCicloUnsubscribe = db.collection('guerraConfig').doc('ciclo').onSnapshot((snap) => {
+    guerraCicloInicio = (snap.exists && snap.data().inicioCiclo) ? snap.data().inicioCiclo : null;
+    if (!snap.exists && isLeader) {
+      // Primeira vez usando a função: inicia o primeiro ciclo automaticamente.
+      db.collection('guerraConfig').doc('ciclo').set({
+        inicioCiclo: firebase.firestore.FieldValue.serverTimestamp()
+      }).catch((err) => console.error(err));
+    }
+    renderGuerraCicloInfo();
+  }, (err) => console.error('Erro ao carregar ciclo de guerra:', err));
+}
+
+function stopGuerraCicloListener() {
+  if (guerraCicloUnsubscribe) { guerraCicloUnsubscribe(); guerraCicloUnsubscribe = null; }
+  guerraCicloInicio = null;
+}
+
+function renderGuerraCicloInfo() {
+  const el = document.getElementById('guerraCicloDatas');
+  const btn = document.getElementById('fecharCicloBtn');
+  if (!el) return;
+
+  if (!guerraCicloInicio || !guerraCicloInicio.toDate) {
+    el.textContent = 'Iniciando ciclo...';
+    return;
+  }
+
+  const inicio = guerraCicloInicio.toDate();
+  const fimPrevisto = new Date(inicio.getTime() + DIAS_CICLO * 24 * 60 * 60 * 1000);
+  const diasPassados = Math.floor((Date.now() - inicio.getTime()) / (24 * 60 * 60 * 1000));
+  const completo = diasPassados >= DIAS_CICLO;
+
+  el.textContent = `${inicio.toLocaleDateString('pt-BR')} até ${fimPrevisto.toLocaleDateString('pt-BR')} · dia ${Math.max(1, Math.min(diasPassados + 1, DIAS_CICLO))} de ${DIAS_CICLO}`;
+  btn.textContent = completo ? '✅ Ciclo completo — fechar e ver ranking' : 'Fechar ciclo antecipadamente';
+}
+
+function renderGuerraRanking() {
+  const listEl = document.getElementById('guerraRankingList');
+  const emptyEl = document.getElementById('guerraRankingEmpty');
+  if (!listEl) return;
+
+  const ativos = adminMembers
+    .filter(m => m.situacao === 'Ativo')
+    .slice()
+    .sort((a, b) => (b.pontosGuerraCiclo || 0) - (a.pontosGuerraCiclo || 0));
+
+  if (ativos.length === 0) {
+    listEl.style.display = 'none';
+    emptyEl.style.display = 'block';
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  listEl.style.display = 'flex';
+  listEl.innerHTML = ativos.map((m, i) => {
+    const posClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+    return `
+      <div class="member-row">
+        <span class="rank-position ${posClass}">${i + 1}º</span>
+        <div class="nick-wrap">
+          <span class="nick">${escapeHtml(m.nick || '—')}</span>
+        </div>
+        <span class="pontos-valor">${m.pontosGuerraCiclo || 0} pts</span>
+        <div class="actions">
+          <button class="btn btn-primary btn-sm" data-action="pontos" data-id="${m.id}" data-nick="${escapeHtml(m.nick || '')}">+ Pontos</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+document.getElementById('guerraRankingList').addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-action="pontos"]');
+  if (!btn) return;
+  openPontosModal(btn.dataset.id, btn.dataset.nick);
+});
+
+// ---------- Modal: adicionar/remover pontos de um integrante ----------
+
+const pontosModal = document.getElementById('pontosModal');
+let pontosTargetId = null;
+let pontosUnsubscribe = null;
+
+function openPontosModal(id, nick) {
+  pontosTargetId = id;
+  document.getElementById('pontosTargetNick').textContent = nick || '';
+  document.getElementById('pontosForm').reset();
+  document.getElementById('pontosData').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('pontosFormMsg').className = 'form-msg';
+  document.getElementById('pontosList').innerHTML = '<div class="warnings-empty">Carregando...</div>';
+  pontosModal.classList.add('show');
+
+  if (pontosUnsubscribe) pontosUnsubscribe();
+  pontosUnsubscribe = db.collection('integrantes').doc(id).collection('guerraPontos')
+    .orderBy('criadoEm', 'desc')
+    .onSnapshot((snapshot) => {
+      renderPontosList(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
+    }, (err) => {
+      console.error(err);
+      document.getElementById('pontosList').innerHTML = '<div class="warnings-empty">Não foi possível carregar.</div>';
+    });
+}
+
+function renderPontosList(entries) {
+  const listEl = document.getElementById('pontosList');
+  if (entries.length === 0) {
+    listEl.innerHTML = '<div class="warnings-empty">Nenhum ponto lançado neste ciclo ainda.</div>';
+    return;
+  }
+  listEl.innerHTML = entries.map(p => `
+    <div class="warning-row">
+      <div class="warning-info">
+        <div class="warning-tipo">${p.pontos || 0} pontos</div>
+        <div class="warning-data">${escapeHtml(p.data || '')}</div>
+      </div>
+      <button type="button" class="warning-remove" data-id="${p.id}" data-pontos="${p.pontos || 0}">Remover</button>
+    </div>
+  `).join('');
+}
+
+document.getElementById('pontosList').addEventListener('click', async (e) => {
+  const btn = e.target.closest('button[data-id]');
+  if (!btn || !pontosTargetId) return;
+  const pontos = parseInt(btn.dataset.pontos, 10) || 0;
+  btn.disabled = true;
+  try {
+    const memberRef = db.collection('integrantes').doc(pontosTargetId);
+    const batch = db.batch();
+    batch.delete(memberRef.collection('guerraPontos').doc(btn.dataset.id));
+    batch.update(memberRef, { pontosGuerraCiclo: firebase.firestore.FieldValue.increment(-pontos) });
+    await batch.commit();
+  } catch (err) {
+    console.error(err);
+    btn.disabled = false;
+  }
+});
+
+document.getElementById('pontosForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!pontosTargetId) return;
+
+  const valor = parseInt(document.getElementById('pontosValor').value, 10);
+  const data = document.getElementById('pontosData').value || new Date().toISOString().slice(0, 10);
+  const msgEl = document.getElementById('pontosFormMsg');
+  const addBtn = document.getElementById('pontosAddBtn');
+  msgEl.className = 'form-msg';
+
+  if (!valor || valor <= 0) {
+    msgEl.textContent = 'Informe uma pontuação válida.';
+    msgEl.className = 'form-msg err show';
+    return;
+  }
+
+  addBtn.disabled = true;
+  addBtn.textContent = 'Adicionando...';
+
+  try {
+    const memberRef = db.collection('integrantes').doc(pontosTargetId);
+    const newRef = memberRef.collection('guerraPontos').doc();
+    const batch = db.batch();
+    batch.set(newRef, {
+      pontos: valor,
+      data,
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    batch.update(memberRef, { pontosGuerraCiclo: firebase.firestore.FieldValue.increment(valor) });
+    await batch.commit();
+
+    document.getElementById('pontosForm').reset();
+    document.getElementById('pontosData').value = new Date().toISOString().slice(0, 10);
+  } catch (err) {
+    console.error(err);
+    msgEl.textContent = 'Não foi possível adicionar os pontos.';
+    msgEl.className = 'form-msg err show';
+  } finally {
+    addBtn.disabled = false;
+    addBtn.textContent = 'Adicionar pontos';
+  }
+});
+
+document.getElementById('pontosCloseBtn').addEventListener('click', () => {
+  pontosModal.classList.remove('show');
+  if (pontosUnsubscribe) { pontosUnsubscribe(); pontosUnsubscribe = null; }
+  pontosTargetId = null;
+});
+
+// ---------- Fechar ciclo (arquiva o ranking e zera os pontos) ----------
+
+const fecharCicloModal = document.getElementById('fecharCicloModal');
+
+document.getElementById('fecharCicloBtn').addEventListener('click', () => {
+  fecharCicloModal.classList.add('show');
+});
+document.getElementById('fecharCicloCancelBtn').addEventListener('click', () => {
+  fecharCicloModal.classList.remove('show');
+});
+
+document.getElementById('fecharCicloConfirmBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('fecharCicloConfirmBtn');
+  btn.disabled = true;
+  btn.textContent = 'Fechando...';
+
+  try {
+    const ativos = adminMembers.filter(m => m.situacao === 'Ativo');
+    const ranking = ativos
+      .map(m => ({ nick: m.nick || '', pontos: m.pontosGuerraCiclo || 0 }))
+      .sort((a, b) => b.pontos - a.pontos);
+
+    const batch = db.batch();
+    const historicoRef = db.collection('guerraHistorico').doc();
+    batch.set(historicoRef, {
+      inicioCiclo: guerraCicloInicio || firebase.firestore.FieldValue.serverTimestamp(),
+      fimCiclo: firebase.firestore.FieldValue.serverTimestamp(),
+      ranking
+    });
+    ativos.forEach(m => {
+      batch.update(db.collection('integrantes').doc(m.id), { pontosGuerraCiclo: 0 });
+    });
+    batch.set(db.collection('guerraConfig').doc('ciclo'), {
+      inicioCiclo: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await batch.commit();
+
+    await logHistorico(
+      'Ciclo de guerra encerrado',
+      '',
+      ranking.length ? `Vencedor: ${ranking[0].nick} (${ranking[0].pontos} pts)` : 'Ciclo encerrado sem pontuações.'
+    );
+
+    fecharCicloModal.classList.remove('show');
+  } catch (err) {
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Fechar ciclo';
+  }
+});
+
+// ---------- Histórico de ciclos encerrados ----------
+
+let guerraHistoricoCache = [];
+let guerraHistoricoUnsubscribe = null;
+
+function startGuerraHistoricoListener() {
+  if (guerraHistoricoUnsubscribe) return;
+  guerraHistoricoUnsubscribe = db.collection('guerraHistorico')
+    .orderBy('fimCiclo', 'desc')
+    .limit(50)
+    .onSnapshot((snapshot) => {
+      guerraHistoricoCache = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderGuerraHistoricoList();
+    }, (err) => console.error('Erro ao carregar histórico de guerra:', err));
+}
+
+function stopGuerraHistoricoListener() {
+  if (guerraHistoricoUnsubscribe) { guerraHistoricoUnsubscribe(); guerraHistoricoUnsubscribe = null; }
+  guerraHistoricoCache = [];
+}
+
+function renderGuerraHistoricoList() {
+  const listEl = document.getElementById('guerraHistoricoList');
+  const emptyEl = document.getElementById('guerraHistoricoEmpty');
+  if (!listEl) return;
+
+  if (guerraHistoricoCache.length === 0) {
+    listEl.style.display = 'none';
+    emptyEl.style.display = 'block';
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  listEl.style.display = 'flex';
+  listEl.innerHTML = guerraHistoricoCache.map(c => {
+    const inicio = c.inicioCiclo && c.inicioCiclo.toDate ? c.inicioCiclo.toDate().toLocaleDateString('pt-BR') : '—';
+    const fim = c.fimCiclo && c.fimCiclo.toDate ? c.fimCiclo.toDate().toLocaleDateString('pt-BR') : '—';
+    const vencedor = (c.ranking && c.ranking[0])
+      ? `${escapeHtml(c.ranking[0].nick)} — ${c.ranking[0].pontos} pts`
+      : 'sem pontuações';
+    return `
+      <div class="historico-row">
+        <div class="h-tipo">${inicio} até ${fim}</div>
+        <div class="h-desc">🏆 ${vencedor}</div>
+        <button type="button" class="btn btn-ghost btn-sm" data-action="verRanking" data-id="${c.id}" style="margin-top:8px;">Ver ranking completo</button>
+      </div>
+    `;
+  }).join('');
+}
+
+document.getElementById('guerraHistoricoList').addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-action="verRanking"]');
+  if (!btn) return;
+  const ciclo = guerraHistoricoCache.find(c => c.id === btn.dataset.id);
+  if (!ciclo) return;
+
+  const inicio = ciclo.inicioCiclo && ciclo.inicioCiclo.toDate ? ciclo.inicioCiclo.toDate().toLocaleDateString('pt-BR') : '—';
+  const fim = ciclo.fimCiclo && ciclo.fimCiclo.toDate ? ciclo.fimCiclo.toDate().toLocaleDateString('pt-BR') : '—';
+  document.getElementById('cicloRankingPeriodo').textContent = `${inicio} até ${fim}`;
+
+  const ranking = ciclo.ranking || [];
+  document.getElementById('cicloRankingList').innerHTML = ranking.length === 0
+    ? '<div class="warnings-empty">Sem pontuações registradas.</div>'
+    : ranking.map((r, i) => `
+        <div class="warning-row">
+          <div class="warning-info">
+            <div class="warning-tipo">${i + 1}º — ${escapeHtml(r.nick)}</div>
+          </div>
+          <div class="pontos-valor">${r.pontos} pts</div>
+        </div>
+      `).join('');
+
+  document.getElementById('cicloRankingModal').classList.add('show');
+});
+
+document.getElementById('cicloRankingCloseBtn').addEventListener('click', () => {
+  document.getElementById('cicloRankingModal').classList.remove('show');
+});
 
 // ============================================================
 // Solicitações de Cadastro (aprovação do líder)
@@ -2607,13 +3108,17 @@ document.getElementById('warningsCloseBtn').addEventListener('click', () => {
 });
 
 // Fecha modais clicando fora do conteúdo
-[memberModal, deleteModal, phoneModal, warningsModal, avisoModal, document.getElementById('deleteAvisoModal'), solicitacaoRecusarModal].forEach(modal => {
+[memberModal, deleteModal, phoneModal, warningsModal, avisoModal, document.getElementById('deleteAvisoModal'), solicitacaoRecusarModal, pontosModal, fecharCicloModal, document.getElementById('cicloRankingModal')].forEach(modal => {
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
       modal.classList.remove('show');
       if (modal === warningsModal) {
         if (warningsUnsubscribe) { warningsUnsubscribe(); warningsUnsubscribe = null; }
         warningsTargetId = null;
+      }
+      if (modal === pontosModal) {
+        if (pontosUnsubscribe) { pontosUnsubscribe(); pontosUnsubscribe = null; }
+        pontosTargetId = null;
       }
     }
   });
