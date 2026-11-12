@@ -519,6 +519,7 @@ main {
 .badge-saiu-grupo { background: rgba(239, 59, 86, 0.14); color: #ff8095; }
 .badge-saiu-guilda { background: rgba(239, 59, 86, 0.2); color: #ff5570; }
 .badge-pendente { background: rgba(139, 92, 246, 0.16); color: #c4b1fb; }
+.badge-outros { background: rgba(168, 152, 194, 0.16); color: var(--text-dim); }
 .badge-warning { background: rgba(251, 191, 36, 0.18); color: #fcd34d; font-weight: 700; }
 
 .member-row .actions {
@@ -1322,7 +1323,12 @@ nav.sub-nav button { font-size: 16.5px; padding: 10px 18px; }
           <option value="Saiu do grupo">Saiu do grupo</option>
           <option value="Saiu da guilda">Saiu da guilda</option>
           <option value="Pendente de verificação">Pendente de verificação</option>
+          <option value="Outros">Outros</option>
         </select>
+      </div>
+      <div class="field" id="memberFormSituacaoOutrosField" style="display:none;">
+        <label for="memberFormSituacaoOutros">Descreva a situação</label>
+        <input id="memberFormSituacaoOutros" type="text" maxlength="30" placeholder="Ex: De férias">
       </div>
       <div class="form-msg" id="memberFormMsg"></div>
       <div class="modal-actions">
@@ -1548,7 +1554,8 @@ const badgeClassFor = (situacao) => {
     case 'Inativo': return 'badge-inativo';
     case 'Saiu do grupo': return 'badge-saiu-grupo';
     case 'Saiu da guilda': return 'badge-saiu-guilda';
-    default: return 'badge-pendente';
+    case 'Pendente de verificação': return 'badge-pendente';
+    default: return situacao ? 'badge-outros' : 'badge-pendente';
   }
 };
 
@@ -2846,11 +2853,18 @@ let editingOriginal = null;
 document.getElementById('addMemberBtn').addEventListener('click', () => openMemberModal(null));
 document.getElementById('memberFormCancel').addEventListener('click', () => closeMemberModal());
 
+document.getElementById('memberFormSituacao').addEventListener('change', (e) => {
+  document.getElementById('memberFormSituacaoOutrosField').style.display =
+    e.target.value === 'Outros' ? 'block' : 'none';
+});
+
 function openMemberModal(id) {
   const form = document.getElementById('memberForm');
   form.reset();
   document.getElementById('memberFormMsg').className = 'form-msg';
   document.getElementById('memberFormId').value = id || '';
+  document.getElementById('memberFormSituacaoOutrosField').style.display = 'none';
+  document.getElementById('memberFormSituacaoOutros').value = '';
 
   if (id) {
     const member = adminMembers.find(m => m.id === id);
@@ -2858,7 +2872,15 @@ function openMemberModal(id) {
     document.getElementById('memberModalTitle').textContent = 'Editar integrante';
     document.getElementById('memberFormNick').value = member ? member.nick : '';
     document.getElementById('memberFormIdJogador').value = member && member.idJogador ? member.idJogador : '';
-    document.getElementById('memberFormSituacao').value = member ? member.situacao : 'Ativo';
+
+    const situacaoAtual = member ? member.situacao : 'Ativo';
+    if (situacaoAtual && !SITUACOES.includes(situacaoAtual)) {
+      document.getElementById('memberFormSituacao').value = 'Outros';
+      document.getElementById('memberFormSituacaoOutros').value = situacaoAtual;
+      document.getElementById('memberFormSituacaoOutrosField').style.display = 'block';
+    } else {
+      document.getElementById('memberFormSituacao').value = situacaoAtual;
+    }
     document.getElementById('memberFormTel').placeholder = 'Deixe em branco para manter o atual';
   } else {
     editingOriginal = null;
@@ -2879,11 +2901,20 @@ document.getElementById('memberForm').addEventListener('submit', async (e) => {
   const nick = document.getElementById('memberFormNick').value.trim();
   const telefone = document.getElementById('memberFormTel').value.trim();
   const idJogador = document.getElementById('memberFormIdJogador').value.trim();
-  const situacao = document.getElementById('memberFormSituacao').value;
+  const situacaoSelecionada = document.getElementById('memberFormSituacao').value;
+  const situacaoOutros = document.getElementById('memberFormSituacaoOutros').value.trim();
   const msgEl = document.getElementById('memberFormMsg');
   const saveBtn = document.getElementById('memberFormSave');
 
   if (!nick) return;
+
+  if (situacaoSelecionada === 'Outros' && !situacaoOutros) {
+    msgEl.textContent = 'Descreva a situação.';
+    msgEl.className = 'form-msg err show';
+    return;
+  }
+  const situacao = situacaoSelecionada === 'Outros' ? situacaoOutros : situacaoSelecionada;
+
   saveBtn.disabled = true;
   saveBtn.textContent = 'Salvando...';
 
