@@ -1278,8 +1278,9 @@ const firebaseConfig = {
 // Authentication > Users, copie o UID gerado e acrescente
 // uma nova linha "UID_AQUI" dentro dos colchetes abaixo.
 const LEADER_UIDS = [
-  "KnuyYC028gR5vaW0BcZejwQLAdz2",
-  "5qyj4TtsSETPTzRqsQGXUWdAl2i1"
+  "KnuyYC028gR5vaW0BcZejwQLAdz2", // líder 1
+  "5qyj4TtsSETPTzRqsQGXUWdAl2i1", // líder 2
+  "qKXdbcIq7ASEuv6yvTYddsv1jFJ3"  // líder 3
 ];
 
 // Inicializa o Firebase (SDK "compat", compatível com JavaScript puro)
@@ -1335,14 +1336,28 @@ navButtons.forEach(btn => {
 // Autenticação
 // ============================================================
 
-// Todo visitante recebe uma sessão anônima automaticamente.
-// Isso dá a cada pessoa um UID estável no navegador, usado para
-// vincular o cadastro dela e impedir que edite dados de outros.
+// Só criamos uma sessão anônima quando a pessoa realmente decide se
+// cadastrar (ver ensureAnonAuth() e o clique em "Cadastrar meu Nick"
+// mais abaixo). Isso evita gerar uma conta anônima para cada visitante
+// que só entra para olhar a lista de integrantes ou os avisos — essas
+// leituras são públicas e não precisam de login nenhum.
+//
+// Se o navegador já tinha uma sessão anônima salva de uma visita
+// anterior (ex: alguém que já se cadastrou), o Firebase a restaura
+// automaticamente aqui, sem criar uma conta nova.
 auth.onAuthStateChanged((user) => {
   if (!user) {
-    auth.signInAnonymously().catch((err) => {
-      console.error('Falha ao iniciar sessão anônima:', err);
-    });
+    currentUser = null;
+    isLeader = false;
+    myMemberDocId = null;
+    updateLeaderPill();
+    document.getElementById('painelLoginWrap').style.display = 'block';
+    document.getElementById('painelAdminWrap').style.display = 'none';
+    document.getElementById('addAvisoBtn').style.display = 'none';
+    stopAdminListener();
+    stopLeaderNotifications();
+    stopHistoricoListener();
+    renderAvisosList();
     return;
   }
 
@@ -1385,11 +1400,29 @@ function updateLeaderPill() {
 
 document.getElementById('leaderActionBtn').addEventListener('click', () => {
   if (isLeader) {
-    auth.signOut().then(() => auth.signInAnonymously());
+    auth.signOut();
   } else {
     goToView('painel');
   }
 });
+
+// Cria a sessão anônima só quando necessário (ver chamadas de
+// ensureAnonAuth() abaixo). Evita gerar uma conta anônima nova
+// a cada visita de quem nunca vai se cadastrar.
+let anonAuthPromise = null;
+function ensureAnonAuth() {
+  if (auth.currentUser) return Promise.resolve(auth.currentUser);
+  if (!anonAuthPromise) {
+    anonAuthPromise = auth.signInAnonymously()
+      .then(cred => cred.user)
+      .catch((err) => {
+        console.error('Falha ao iniciar sessão anônima:', err);
+        anonAuthPromise = null;
+        throw err;
+      });
+  }
+  return anonAuthPromise;
+}
 
 // Login do líder
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -1422,9 +1455,15 @@ function traduzErroAuth(err) {
 // HOME — Cadastro de integrante
 // ============================================================
 
-document.getElementById('openCadastroBtn').addEventListener('click', () => {
+document.getElementById('openCadastroBtn').addEventListener('click', async () => {
   document.getElementById('cadastroCard').style.display = 'block';
   document.getElementById('openCadastroBtn').style.display = 'none';
+  try {
+    await ensureAnonAuth();
+  } catch (err) {
+    // erro já tratado/logado em ensureAnonAuth; o envio do formulário
+    // vai tentar de novo e mostrar uma mensagem ao usuário se falhar.
+  }
 });
 
 function refreshCadastroButtonState() {
@@ -1453,18 +1492,24 @@ document.getElementById('cadastroForm').addEventListener('submit', async (e) => 
   msgEl.className = 'form-msg';
 
   if (!nick || !telefone) return;
-  if (!currentUser) {
-    msgEl.textContent = 'Aguarde a conexão ser estabelecida e tente novamente.';
-    msgEl.className = 'form-msg err show';
-    return;
-  }
 
   btn.disabled = true;
   btn.textContent = 'Enviando...';
 
+  let user;
   try {
-    const reqRef = db.collection('solicitacoes').doc(currentUser.uid);
-    const memberRef = db.collection('integrantes').doc(currentUser.uid);
+    user = await ensureAnonAuth();
+  } catch (err) {
+    msgEl.textContent = 'Não foi possível iniciar sua sessão. Tente novamente.';
+    msgEl.className = 'form-msg err show';
+    btn.disabled = false;
+    btn.textContent = 'Salvar cadastro';
+    return;
+  }
+
+  try {
+    const reqRef = db.collection('solicitacoes').doc(user.uid);
+    const memberRef = db.collection('integrantes').doc(user.uid);
     const [existingMember, existingReq] = await Promise.all([memberRef.get(), reqRef.get()]);
 
     if (existingMember.exists) {
