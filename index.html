@@ -2654,7 +2654,7 @@ function startLeaderNotifications() {
 
     if (solicitacoesInitialLoadDone) {
       const hasNew = snapshot.docChanges().some(c => c.type === 'added');
-      if (hasNew) playNotificationSound();
+      if (hasNew) { playNotificationSound(); vibrarCelular(); }
     }
     solicitacoesInitialLoadDone = true;
   }, (err) => console.error(err));
@@ -2754,6 +2754,7 @@ async function aprovarSolicitacao(uid, btn) {
     await batch.commit();
 
     await logHistorico('Cadastro aprovado', nick, 'Solicitação aprovada e movida para a lista oficial de integrantes.');
+    vibrarCelular();
   } catch (err) {
     console.error(err);
     if (btn) { btn.disabled = false; btn.textContent = 'Aprovar'; }
@@ -2783,6 +2784,7 @@ document.getElementById('recusarConfirmBtn').addEventListener('click', async () 
   try {
     await db.collection('solicitacoes').doc(recusarTargetId).delete();
     await logHistorico('Cadastro recusado', nick, 'Solicitação recusada pelo líder.');
+    vibrarCelular();
     solicitacaoRecusarModal.classList.remove('show');
   } catch (err) {
     console.error(err);
@@ -2806,6 +2808,15 @@ function unlockAudio() {
   } catch (e) { /* navegador sem suporte — ignora silenciosamente */ }
 }
 document.addEventListener('click', unlockAudio, { once: true });
+
+// Vibra o celular do líder (se o navegador suportar — iOS Safari não suporta).
+function vibrarCelular() {
+  try {
+    if (navigator.vibrate) {
+      navigator.vibrate(1000);
+    }
+  } catch (e) { /* ignora silenciosamente se não for suportado */ }
+}
 
 function playNotificationSound() {
   if (localStorage.getItem('acaiPimenta_som') === 'off') return;
